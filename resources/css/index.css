@@ -1,9 +1,13 @@
 * {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: Helvetica;
 }
 
 h1 {
-    color: aquamarine;
+    color: khaki;
+    font-family: Helvetica;
+    font-weight: bold;
+    font-size: 100px;
+    text-align: center;
 }
 
 p, 
