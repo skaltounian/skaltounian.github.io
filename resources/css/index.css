@@ -1,7 +1,3 @@
-* {
-    font-family: Helvetica;
-}
-
 h1 {
     color: khaki;
     font-family: Helvetica;
@@ -11,13 +7,14 @@ h1 {
 }
 
 h2 {
+    color: white;
     font-family: helvetica;
     font-size: 32px;
     font-weight: bold;
-    color: white;
 }
 
 a {
     color: blue;
+    font-family: helvetica;
     font-weight: bold;
 }
