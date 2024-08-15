@@ -1,4 +1,28 @@
-/* Basic breadcrumb styling */
+/* Navbar styling */
+.navbar {
+  background-color: #333;
+  overflow: hidden; /* Ensures the content stays within the navbar */
+  position: fixed; /* Fixes the navbar at the top */
+  top: 0; /* Positions the navbar at the very top */
+  width: 100%; /* Makes the navbar span the full width of the page */
+  z-index: 1000; /* Ensures the navbar stays on top of other content */
+}
+
+.navbar a {
+  float: left; /* Makes each link align horizontally */
+  display: block;
+  color: white;
+  text-align: left;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #555;
+  color: white;
+}
+
+/* Breadcrumb styling */
 .breadcrumb {
     list-style: none;
     display: flex;

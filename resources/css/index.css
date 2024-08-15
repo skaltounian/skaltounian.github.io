@@ -1,20 +1,18 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 h1 {
-    color: khaki;
+    color: blue;
     font-family: Helvetica;
     font-weight: bold;
-    font-size: 100px;
-    text-align: center;
+    font-size: 24px;
+    text-align: left;
 }
 
 h2 {
-    color: white;
+    color: blueviolet;
     font-family: helvetica;
-    font-size: 32px;
-    font-weight: bold;
-}
-
-a {
-    color: blue;
-    font-family: helvetica;
+    font-size: 20px;
     font-weight: bold;
 }
