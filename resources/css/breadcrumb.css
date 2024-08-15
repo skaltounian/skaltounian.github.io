@@ -1,0 +1,38 @@
+/* Basic breadcrumb styling */
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .breadcrumb li {
+    margin-right: 10px;
+  }
+  
+  .breadcrumb li a {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .breadcrumb li a:hover {
+    text-decoration: underline;
+  }
+  
+  .breadcrumb li::after {
+    content: "/";
+    margin-left: 10px;
+    color: #6c757d; /* Light grey for the separator */
+  }
+  
+  .breadcrumb li:last-child::after {
+    content: "";
+    margin-left: 0;
+  }
+  
+  .breadcrumb li[aria-current="page"] {
+    font-weight: bold;
+    color: #6c757d; /* Light grey for the current page */
+  }
+  
