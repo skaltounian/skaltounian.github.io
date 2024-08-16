@@ -2,20 +2,27 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+
 h1 {
     color: darkblue;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 30px;
     text-align: left;
 }
 
 h2 {
     color: darkblue;
+    font-size: 20px;
+    font-weight: bold;
+}
+h3 {
+    color: darkblue;
     font-size: 18px;
     font-weight: bold;
 }
 
-p {
+p, 
+li {
     color: black;
     font-size: 14px;
 }
@@ -24,16 +31,20 @@ p {
 .styled-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 14px;
+    margin: 12px 0;
     text-align: left;
     border: 1px solid lightgray;
 }
 
 .styled-table thead tr {
     background-color: darkblue;
+    font-size: 14px;
     color: white;
     text-align: left;
+}
+
+.styled-table td {
+    font-size: 14px;
 }
 
 .styled-table th, .styled-table td {
