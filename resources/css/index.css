@@ -3,16 +3,48 @@
 }
 
 h1 {
-    color: blue;
-    font-family: Helvetica;
+    color: darkblue;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 20px;
     text-align: left;
 }
 
 h2 {
-    color: blueviolet;
-    font-family: helvetica;
-    font-size: 20px;
+    color: darkblue;
+    font-size: 18px;
     font-weight: bold;
+}
+
+p {
+    color: black;
+    font-size: 14px;
+}
+
+/* Table styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 14px;
+    text-align: left;
+    border: 1px solid lightgray;
+}
+
+.styled-table thead tr {
+    background-color: darkblue;
+    color: white;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    border: 1px solid lightgray;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid lightgray;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: lightgray;
 }

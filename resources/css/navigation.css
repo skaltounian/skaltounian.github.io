@@ -37,7 +37,7 @@
   
   .breadcrumb li a {
     text-decoration: none;
-    color: #007bff;
+    color: darkblue;
   }
   
   .breadcrumb li a:hover {
@@ -47,7 +47,7 @@
   .breadcrumb li::after {
     content: "/";
     margin-left: 10px;
-    color: #6c757d; /* Light grey for the separator */
+    color: lightgray; /* Light gray for the separator */
   }
   
   .breadcrumb li:last-child::after {
