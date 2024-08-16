@@ -1,11 +1,17 @@
 /* Navbar styling */
 .navbar {
-  background-color: #333;
+  background-color: darkblue;
   overflow: hidden; /* Ensures the content stays within the navbar */
   position: fixed; /* Fixes the navbar at the top */
   top: 0; /* Positions the navbar at the very top */
   width: 100%; /* Makes the navbar span the full width of the page */
   z-index: 1000; /* Ensures the navbar stays on top of other content */
+}
+
+.navbar .logo img {
+  height: 35px;
+  width: auto;
+  margin-right: 20px;
 }
 
 .navbar a {
@@ -28,7 +34,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 0;
-    padding-top: 60px; /* Adjust the top so it won't be hidden under the nav bar*/
+    padding-top: 70px; /* Adjust the top so it won't be hidden under the nav bar*/
     margin: 0;
   }
   
