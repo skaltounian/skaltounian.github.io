@@ -1,32 +1,153 @@
+/* ======================
+    1. Global styles
+    2. Typography styles
+    3. Structure styles
+    4. Module styles
+    5. Component styles
+    6. Page styles
+========================= */ 
+
+/* 1. Global Styles ============================== */ 
 * {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+html {
+    margin: 0 auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    margin: 0 auto;
+    overflow-x: hidden;
+    width: 100%;
+    text-rendering: optimizeLegibility;
+    color: dimgray;
+}
+
+/* 2. Typography Styles =========================== */
+h1,
+h2,
+h3,
+h4 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 15px;
+    transition: font-size 0.25s ease;
+    color: #bfb30a;
+}
+
 h1 {
-    color: darkblue;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 35px;
     text-align: left;
+    line-height: 0.85;
 }
 
 h2 {
-    color: darkblue;
     font-size: 20px;
     font-weight: bold;
+    line-height: 0.85;
 }
 h3 {
-    color: darkblue;
     font-size: 18px;
     font-weight: bold;
 }
 
 p, 
 li {
-    color: black;
     font-size: 14px;
+    line-height: 23px;
+    margin: 0 0 5px;
 }
 
-/* Table styling */
+/* 3. Structure Styles ============== */
+section {
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 0 15px;
+}
+
+section::before, section::after {
+    content: " ";
+    display: table;
+    clear: both;
+}
+
+/* 4. Module Styles ======================*/
+/* 4a. Navbar style --------------------- */
+.navbar {
+    background-color: #014029;
+    overflow: hidden; /* Ensures the content stays within the navbar */
+    position: fixed; /* Fixes the navbar at the top */
+    top: 0; /* Positions the navbar at the very top */
+    width: 100%; /* Makes the navbar span the full width of the page */
+    z-index: 1000; /* Ensures the navbar stays on top of other content */
+  }
+  
+  .navbar .logo img {
+    height: 35px;
+    width: auto;
+    margin-right: 20px;
+  }
+  
+  .navbar a {
+    float: left; /* Makes each link align horizontally */
+    display: block;
+    color: #bfb30a;
+    text-align: left;
+    padding: 14px 20px;
+    text-decoration: none;
+  }
+  
+  .navbar a:hover {
+    background-color: #6fa696;
+    color: white;
+  }
+  
+  /* 4b. Breadcrumb style ---------------- */
+  .breadcrumb {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0;
+      padding-top: 70px; /* Adjust the top so it won't be hidden under the nav bar*/
+      margin: 0;
+    }
+    
+    .breadcrumb li {
+      margin-right: 10px;
+    }
+    
+    .breadcrumb li a {
+      text-decoration: none;
+      color: darkblue;
+    }
+    
+    .breadcrumb li a:hover {
+      text-decoration: underline;
+    }
+    
+    .breadcrumb li::after {
+      content: "/";
+      margin-left: 10px;
+      color: lightgray; /* Light gray for the separator */
+    }
+    
+    .breadcrumb li:last-child::after {
+      content: "";
+      margin-left: 0;
+    }
+    
+    .breadcrumb li[aria-current="page"] {
+      font-weight: bold;
+      color: #6c757d; /* Light grey for the current page */
+    }
+    
+
+/* 4c. Table style --------------------- */
 .styled-table {
     width: 100%;
     border-collapse: collapse;
@@ -36,7 +157,7 @@ li {
 }
 
 .styled-table thead tr {
-    background-color: darkblue;
+    background-color: #6fa696;
     font-size: 14px;
     color: white;
     text-align: left;
@@ -58,3 +179,10 @@ li {
 .styled-table tbody tr:nth-of-type(even) {
     background-color: lightgray;
 }
+
+/* 4d. Footer Style --------------- */
+
+/* 5. Component Styles ================= */
+/* Buttons, Input Areas, Text Areas */
+
+/* 6. Page Styles ====================== */
