@@ -33,16 +33,18 @@ h3,
 h4 {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 700;
+    text-align: left;
     line-height: 1.25;
     margin-bottom: 15px;
     transition: font-size 0.25s ease;
-    color: #bfb30a;
+    padding: 25px 10px 25px 10px;
+    background-color: #bf871f;
+    color: white;
 }
 
 h1 {
     font-weight: bold;
     font-size: 35px;
-    text-align: left;
     line-height: 0.85;
 }
 
@@ -52,7 +54,7 @@ h2 {
     line-height: 0.85;
 }
 h3 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
 }
 
@@ -186,3 +188,13 @@ section::before, section::after {
 /* Buttons, Input Areas, Text Areas */
 
 /* 6. Page Styles ====================== */
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+section {
+    padding: 20px;
+    border: 1px solid lightgray;
+    box-shadow: 2px 2px 5px lightgray;
+}
