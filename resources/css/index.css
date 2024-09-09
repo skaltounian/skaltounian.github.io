@@ -79,36 +79,7 @@ section::before, section::after {
 }
 
 /* 4. Module Styles ======================*/
-/* 4a. Navbar style --------------------- */
-.navbar {
-    background-color: #014029;
-    overflow: hidden; /* Ensures the content stays within the navbar */
-    position: fixed; /* Fixes the navbar at the top */
-    top: 0; /* Positions the navbar at the very top */
-    width: 100%; /* Makes the navbar span the full width of the page */
-    z-index: 1000; /* Ensures the navbar stays on top of other content */
-  }
-  
-  .navbar .logo img {
-    height: 35px;
-    width: auto;
-    margin-right: 20px;
-  }
-  
-  .navbar a {
-    float: left; /* Makes each link align horizontally */
-    display: block;
-    color: #bfb30a;
-    text-align: left;
-    padding: 14px 20px;
-    text-decoration: none;
-  }
-  
-  .navbar a:hover {
-    background-color: #6fa696;
-    color: white;
-  }
-  
+
   /* 4b. Breadcrumb style ---------------- */
   .breadcrumb {
       list-style: none;
@@ -188,13 +159,57 @@ section::before, section::after {
 /* Buttons, Input Areas, Text Areas */
 
 /* 6. Page Styles ====================== */
-main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-}
+
 section {
     padding: 20px;
     border: 1px solid lightgray;
     box-shadow: 2px 2px 5px lightgray;
+}
+article {
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+@media screen and (min-width: 1024px) {
+    /* 4a. Navbar style --------------------- */
+.navbar {
+    background-color: #014029;
+    overflow: hidden; /* Ensures the content stays within the navbar */
+    position: fixed; /* Fixes the navbar at the top */
+    top: 0; /* Positions the navbar at the very top */
+    width: 100%; /* Makes the navbar span the full width of the page */
+    z-index: 1000; /* Ensures the navbar stays on top of other content */
+  }
+  
+  .navbar .logo img {
+    height: 35px;
+    width: auto;
+    margin-right: 20px;
+  }
+  
+  .navbar a {
+    float: left; /* Makes each link align horizontally */
+    display: block;
+    color: #bfb30a;
+    text-align: left;
+    padding: 14px 20px;
+    text-decoration: none;
+  }
+  
+  .navbar a:hover {
+    background-color: #6fa696;
+    color: white;
+  }
+  
+    main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    
 }
