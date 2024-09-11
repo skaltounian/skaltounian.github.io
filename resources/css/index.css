@@ -170,7 +170,7 @@ article {
     margin-bottom: 30px;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1000px) {
     /* 4a. Navbar style --------------------- */
     .navbar {
         background-color: #014029;
@@ -215,7 +215,7 @@ article {
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1000px) {
 
     /* Style the navigation menu */
     .navbar {
@@ -234,7 +234,7 @@ article {
     /* Hide the links inside the navigation menu (except for logo/home) */
     .navbar #menulinks {
         display: none;
-    }
+    } 
   
     /* Style navigation menu links */
     .navbar a {
