@@ -170,7 +170,7 @@ article {
     margin-bottom: 30px;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 900px) {
     /* 4a. Navbar style --------------------- */
     .navbar {
         background-color: #014029;
@@ -181,12 +181,14 @@ article {
         z-index: 1000; /* Ensures the navbar stays on top of other content */
     }
   
+    /* configure the logo image of the page*/
     .navbar .logo img {
         height: 35px;
         width: auto;
         margin-right: 20px;
     }
   
+    /* configure the text on the nav bar*/
     .navbar a {
         float: left; /* Makes each link align horizontally */
         display: block;
@@ -195,15 +197,15 @@ article {
         padding: 14px 20px;
         text-decoration: none;
     }
-  
+    /* Hide the hamburger menu on larger screens */
+    .navbar a.icon {
+        visibility: hidden;
+    }
+    
+    /* configure the hover effects of navbar text */
     .navbar a:hover {
         background-color: #6fa696;
         color: white;
-    }
-  
-    /* Style the hamburger menu */
-    .navbar a.icon {
-        display: none;
     }
 
     main {
@@ -213,7 +215,7 @@ article {
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
 
     /* Style the navigation menu */
     .navbar {
@@ -245,16 +247,17 @@ article {
   
     /* Style the hamburger menu */
     .navbar a.icon {
-        background: #6fa696;
+        background: #014029;
         display: block;
         position: absolute;
         right: 0;
         top: 0;
+        font-size: 30px;
     }
   
     /* Add a background color on mouse-over */
-    .navbar a:hover {
-        background-color: #6fa696;
-        color: #bf871f;
+    .navbar a.icon:hover {
+        background-color: #bf871f;
+        color: #014029
     }
 }
