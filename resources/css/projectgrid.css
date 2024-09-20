@@ -23,7 +23,7 @@ body {
     overflow-x: hidden;
     width: 100%;
     text-rendering: optimizeLegibility;
-    color: dimgray;
+    color: dimgray;  /* text colour for p*/
 }
 
 /* 2. Typography Styles =========================== */
@@ -67,15 +67,10 @@ li {
 /* 3. Structure Styles ============== */
 section {
     margin: 0 auto;
-    max-width: 1280px;
+    width: 100%;
     padding: 0 15px;
 }
 
-section::before, section::after {
-    content: " ";
-    display: table;
-    clear: both;
-}
 /* 4. Module Styles ======================*/
 
   /* 4b. Breadcrumb style ---------------- */
@@ -116,25 +111,6 @@ section::before, section::after {
     font-weight: bold;
     color: #6fa696; /* Light grey for the current page */
   }
-  
-
-/* 4c. Grid setup ----------------- */
-.grid-container {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto 1fr;
-    grid-auto-rows: 1fr;
-    column-gap: 20px;
-}
-
-.banner {
-    grid-column-start: 1;
-    grid-column-end: 3;
-}
-.project {
-
-}
   
 /* 4d. Footer Style --------------- */
 
@@ -192,11 +168,22 @@ article {
         color: white;
     }
 
-    main {
+    .grid-container {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto 1fr;
+        grid-auto-rows: 1fr;
+        column-gap: 20px;
     }
+    
+    .banner {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+    .project {
+    
+    }
+    
 }
 
 @media screen and (max-width: 1000px) {
