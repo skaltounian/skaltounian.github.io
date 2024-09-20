@@ -96,7 +96,7 @@ section::before, section::after {
     
     .breadcrumb li a {
       text-decoration: none;
-      color: darkblue;
+      color: #014029;
     }
     
     .breadcrumb li a:hover {
@@ -104,9 +104,9 @@ section::before, section::after {
     }
     
     .breadcrumb li::after {
-      content: "/";
+      content: ">";
       margin-left: 10px;
-      color: lightgray; /* Light gray for the separator */
+      color: #014029; /* Light gray for the separator */
     }
     
     .breadcrumb li:last-child::after {
@@ -116,7 +116,7 @@ section::before, section::after {
     
     .breadcrumb li[aria-current="page"] {
       font-weight: bold;
-      color: #6c757d; /* Light grey for the current page */
+      color: #6fa696; /* Light grey for the current page */
     }
     
 

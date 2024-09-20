@@ -94,7 +94,7 @@ section::before, section::after {
   
   .breadcrumb li a {
     text-decoration: none;
-    color: darkblue;
+    color: #014029;
   }
   
   .breadcrumb li a:hover {
@@ -102,9 +102,9 @@ section::before, section::after {
   }
   
   .breadcrumb li::after {
-    content: "/";
+    content: ">";
     margin-left: 10px;
-    color: lightgray; /* Light gray for the separator */
+    color: #014029; /* Light gray for the separator */
   }
   
   .breadcrumb li:last-child::after {
@@ -114,10 +114,27 @@ section::before, section::after {
   
   .breadcrumb li[aria-current="page"] {
     font-weight: bold;
-    color: #6c757d; /* Light grey for the current page */
+    color: #6fa696; /* Light grey for the current page */
   }
+  
 
 /* 4c. Grid setup ----------------- */
+.grid-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-auto-rows: 1fr;
+    column-gap: 20px;
+}
+
+.banner {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.project {
+
+}
   
 /* 4d. Footer Style --------------- */
 
