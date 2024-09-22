@@ -157,6 +157,7 @@ article {
         padding: 14px 20px;
         text-decoration: none;
     }
+
     /* Hide the hamburger menu on larger screens */
     .navbar a.icon {
         visibility: hidden;
@@ -180,10 +181,7 @@ article {
         grid-column-start: 1;
         grid-column-end: 3;
     }
-    .project {
-    
-    }
-    
+
 }
 
 @media screen and (max-width: 1000px) {
@@ -231,4 +229,9 @@ article {
         background-color: #bf871f;
         color: #014029
     }
-}
+/*
+    .grid-container {
+        display: list-item;
+    }
+*/
+}   
