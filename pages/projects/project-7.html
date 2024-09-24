@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I chose the colour scheme for my website. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Website Colours</title>
+        <link href="../../resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="../../resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+                <a href="../../index.html" class="logo"><img src="../../resources/media/SHA.JPG" alt="website logo"></a>
+                <div id="menulinks">
+                    <a href="../../index.html">Home</a>
+                    <a href="../projects.html">Geekout</a>
+                    <a href="#">Cheat Sheets</a>
+                    <a href="#">Non-Tech Stuff</a>
+                    <a href="#">Volunteerism</a>
+                    <a href="#">Paintings</a>
+                    <a href="#">Outdoors</a>
+                </div>
+                <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
+            </nav>
+
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../projects.html">Geekout</a></li>
+                    <li>Projects</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="introduction">
+                <h1>Establishing The Colour Scheme for This Website</h1>
+                <article class="Intro">
+                    <h2>Introduction</h2>
+                    <p>This article describes how I developed the colour scheme for this website.</p>
+                </article>
+            </section>
+            <section class="references">
+                <article>
+                    <h2>Discussion</h2>
+                    <p>I used the Adobe Color tool to develop the colours for this page. It was pretty easy to do.</p>
+                    <ul>
+                        <li>Navigated to the <a href="https://color.adobe.com/">Adobe Color</a> website</li>
+                        <li>From the home page I navigated to the <a href="https://color.adobe.com/create/color-wheel">Create</a> option</li>
+                        <li>Used the <a href="https://color.adobe.com/create/image">Extract Theme</a> option on the website</li>
+                        <li>I dragged and dropped an image from my collection into the work area</li>
+                        <li>The tool gerated a set of colours for me to use for my website</li>
+                    </ul>
+                    <p>Once I had the colours, I had to do some experimentation to choose the combinations for the various elements.</p>
+                </article>
+            </section>
+
+        </main>
+        <footer>
+
+        </footer>
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>

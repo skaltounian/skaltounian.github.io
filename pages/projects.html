@@ -13,7 +13,7 @@
         <!-- The header with navigation and breadcrumbs -->
         <header>
             <nav class="navbar">
-                <a href="index.html" class="logo"><img src="../resources/media/SHA.JPG" alt="website logo"></a>
+                <a href="../index.html" class="logo"><img src="../resources/media/SHA.JPG" alt="website logo"></a>
                 <div id="menulinks">
                     <a href="../index.html">Home</a>
                     <a href="#">Geekout</a>
@@ -45,7 +45,11 @@
                     <p>Crazy projects that keep the left side of my brain going.</p>
                     <p>This page is still on the syle sheet used by the landing page. I will eventually switch it to a grid layout.</p>
                 </article>
-
+                <article class="project 7">
+                    <h2>Colour Scheme</h2>
+                    <p>Establishing the colour scheme for this website.</p>
+                    <p><a href="../pages/projects/project-7.html">Read More</a></p>
+                </article>
                 <article class="project 6">
                     <h2>Print Server</h2>
                     <p>Use a Raspberry Pi to create a WiFi printer.</p>
@@ -74,6 +78,16 @@
             
 
         </main>
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
 
     </body>
 </html>

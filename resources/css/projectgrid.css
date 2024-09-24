@@ -99,7 +99,7 @@ section {
   .breadcrumb li::after {
     content: ">";
     margin-left: 10px;
-    color: #014029; /* Light gray for the separator */
+    color: #014029; /* the separator */
   }
   
   .breadcrumb li:last-child::after {
@@ -109,7 +109,7 @@ section {
   
   .breadcrumb li[aria-current="page"] {
     font-weight: bold;
-    color: #6fa696; /* Light grey for the current page */
+    color: #6fa696; /* the current page */
   }
   
 /* 4d. Footer Style --------------- */
@@ -128,7 +128,6 @@ article {
     margin-top: 15px;
     margin-bottom: 30px;
 }
-
   
 @media screen and (min-width: 1000px) {
     /* 4a. Navbar style --------------------- */
