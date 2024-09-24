@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I chose the colour scheme for my website. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>RPI Print Server</title>
+        <link href="../../resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="../../resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+                <a href="../../index.html" class="logo"><img src="../../resources/media/SHA.JPG" alt="website logo"></a>
+                <div id="menulinks">
+                    <a href="../../index.html">Home</a>
+                    <a href="../projects.html">Geekout</a>
+                    <a href="#">Cheat Sheets</a>
+                    <a href="#">Non-Tech Stuff</a>
+                    <a href="#">Volunteerism</a>
+                    <a href="#">Paintings</a>
+                    <a href="#">Outdoors</a>
+                </div>
+                <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
+            </nav>
+
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../projects.html">Geekout</a></li>
+                    <li>Projects</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="introduction">
+                <h1>Set Up a Print Server with a Raspberry PI</h1>
+                <article class="intro">
+                    <h2>Introduction</h2>
+                    <p>This article describes how I set up a print server using a Raspberry Pi (4).</p>
+                    <p>My HP printer does have WiFi, but it always acts up. Besides, I wanted my own server.</p>
+                </article>
+            </section>
+            <section class="discussion">
+                <article>
+                    <h2>Preparing the Raspberry Pi</h2>
+                    <h3>Installing the Linux Distro</h3>
+                    <p>The RPI Imager Tool was very helpful in getting this done:</p>
+                    <ul>
+                        <li>Raspberry Pi, headless image (no desktop)</li>
+                        <li>Configure the <code>username</code></li>
+                        <li>Configure the <code>password</code></li>
+                        <li>Used the cat /etc/os-release command to confirm I had installed bullseye</li>
+                    </ul>
+                    <h3>LAN Setup</h3>
+                    <p>Set up the RPI LAN like so:</p>
+                    <ul>
+                        <li>At the command line, type: <code>sudo raspi-config</code></li>
+                        <li>Navigate to System Options > Wireless LAN and configure the SSID and Passphrase for WiFi</li>
+                        <li>Complete the change by selecting <code>OK</code> and exit the config menu</li>
+                        <li>You can use <code>ifgonfig</code> to check that the wireless interface is now connected</li>
+                        <li>This would be apparent if the interface for <code>wlan0</code> has an IP address</li>
+                        <li>That's because the RPI using DHCP to obtain the IP address from your router</li>
+                    </ul>
+                    <h3>Other Setup</h3>
+                    <p>This would be a good time to complete some other configurations:</p>
+                    <ul>
+                        <li>At the command line, type: <code>sudo raspi-config</code></li>
+                        <li>Change the locale to something more relevant to you</li>
+                        <li>Change the time zone to your local zone</li>
+                        <li>Enable SSH if you think you're going to use an application like PuTTY to connect to your RPI</li>
+                        <li>Change the hostname - because it's useful to differentiate your RPI from all the others in the house</li>
+                        <li>reboot your RPI</li>
+                    </ul>
+                    <h3>Update the RPI</h3>
+                    <p>Take the opportunity to update the RPI before continuing.</p>
+                    <ul>
+                        <li><code>apt-get update</code></li>
+                        <li><code>apt-get upgrade</code></li>
+                        <li>reboot your RPI</li>
+                    </ul>
+                    <h3>Static IP - NOT</h3>
+                    <p>Using static IPs is not good practise.</p>
+                    <p>A better solution is to define the hostname of the RPI on the network router and use the same name in PuTTY to connect to the RPI remotely.</p>
+                </article>
+                <article>
+                    <h2>Install the Print Server</h2>
+                    <h3>Install Cups and configure</h3>
+                    <p>Use the following steps:</p>
+                    <ul>
+                        <li><code>sudo apt install cups</code></li>
+                        <li><code>sudo usermod -a -G lpadmin username</code> (or whoever the user is)</li>
+                        <li><code>sudo cupsctl --remote-any</code></li>
+                        <li><code>sudo systemctl restart cups</code></li>
+                    </ul>
+                    <h3>Setup Samba for Windows Printing</h3>
+                    <p>Use the following steps</p>
+                    <ul>
+                        <li>Type <code>sudo apt install samba</code></li>
+                        <li>Make edits to the samba config file by typing:</li>
+                    </ul>
+                    <p><code>sudo nano /etc/samba/smb.conf</code></p>
+                    <p>Make the following edits</p>
+
+                    <pre><code># CUPS printing.
+[printers]
+comment = All Printers
+browseable = no
+path = /var/spool/samba
+printable = yes
+guest ok = yes
+read only = yes
+create mask = 0700
+</code></pre>
+
+<pre><code># Windows clients look for this share name as a source of downloadable
+# printer drivers
+[print$]
+comment = Printer Drivers
+path = /var/lib/samba/printers
+browseable = yes
+read only = no
+guest ok = no</code></pre>
+
+                    <ul>
+                        <li>Save and exit the file and restart samba with <code>sudo systemctl restart smbd</code></li>
+                        <li>Load the drivers for your favourite printer (HP printers) for me: <code>sudo apt-get install hplip, </code></li>
+                        <li>Get the RPI’s IP address with <code>hostname -I</code></li>
+                        <li>Connect the printer to the RPI</li>
+                        <li>In a browser on your computer, navigate to the IP address</li>
+                        <li>Then navigate to Administration > Add Printer</li>
+                        <li>Enter the username and password to the RPI</li>
+                        <li>Select the printer and click continue</li>
+                        <li>Enable printer sharing and click continue</li>
+                        <li>Configure the General settings to set the default options</li>
+                    </ul>
+                </article>
+                <article>
+                    <h2>Configure Windows to the find the RPI Server</h2>
+                    <p>On your Windows Computer, navigate to:</p>
+                    <ul>
+                        <li>Settings > </li>
+                        <li>Bluetooth and Devices ></li>
+                        <li>Printers & Scanners ></li>
+                        <li>Click Add device and the computer should automatically discover the server.</li>
+                    </ul>
+                </article>
+                <article>
+                    <h2>References</h2>
+                    <li><a href="https://pimylifeup.com/raspberry-pi-print-server/">PI My Life Up: Network Print Server</a></li>
+                </article>
+
+            </section>
+
+        </main>
+        <footer>
+
+        </footer>
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
