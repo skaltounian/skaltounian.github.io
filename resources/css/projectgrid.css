@@ -88,7 +88,9 @@ section {
     flex-wrap: wrap;
     padding: 0;
     padding-top: 70px; /* Adjust the top so it won't be hidden under the nav bar*/
-    margin: 0;
+    margin-left: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
   }
   
   .breadcrumb li {
