@@ -45,29 +45,29 @@
                 <article class="intro">
                     <h2>Introduction</h2>
                     <p>This article describes how I set up a print server using a Raspberry Pi (4).</p>
-                    <p>My HP printer does have WiFi, but it always acts up. Besides, I wanted my own server.</p>
+                    <p>My HP printer does have Wi-Fi, but it always acts up. Besides, I wanted my own server.</p>
                 </article>
             </section>
             <section class="discussion">
                 <article>
                     <h2>Preparing the Raspberry Pi</h2>
                     <h3>Installing the Linux Distro</h3>
-                    <p>The RPI Imager Tool was very helpful in getting this done:</p>
+                    <p>The <a href="https://www.raspberrypi.com/software/">RPI Imager Tool</a> was very helpful in getting this done:</p>
                     <ul>
                         <li>Raspberry Pi, headless image (no desktop)</li>
                         <li>Configure the <code>username</code></li>
                         <li>Configure the <code>password</code></li>
-                        <li>Used the cat /etc/os-release command to confirm I had installed bullseye</li>
+                        <li>Used <code>/etc/os-release</code> command to confirm I had installed bullseye</li>
                     </ul>
                     <h3>LAN Setup</h3>
                     <p>Set up the RPI LAN like so:</p>
                     <ul>
                         <li>At the command line, type: <code>sudo raspi-config</code></li>
-                        <li>Navigate to System Options > Wireless LAN and configure the SSID and Passphrase for WiFi</li>
+                        <li>Navigate to <b>System Options > Wireless LAN</b> and configure the SSID and Passphrase for Wi-Fi</li>
                         <li>Complete the change by selecting <code>OK</code> and exit the config menu</li>
                         <li>You can use <code>ifgonfig</code> to check that the wireless interface is now connected</li>
                         <li>This would be apparent if the interface for <code>wlan0</code> has an IP address</li>
-                        <li>That's because the RPI using DHCP to obtain the IP address from your router</li>
+                        <li>That's because the RPI uses DHCP to obtain the IP address from your router</li>
                     </ul>
                     <h3>Other Setup</h3>
                     <p>This would be a good time to complete some other configurations:</p>
@@ -77,14 +77,14 @@
                         <li>Change the time zone to your local zone</li>
                         <li>Enable SSH if you think you're going to use an application like PuTTY to connect to your RPI</li>
                         <li>Change the hostname - because it's useful to differentiate your RPI from all the others in the house</li>
-                        <li>reboot your RPI</li>
+                        <li>Restart your RPI</li>
                     </ul>
                     <h3>Update the RPI</h3>
                     <p>Take the opportunity to update the RPI before continuing.</p>
                     <ul>
                         <li><code>apt-get update</code></li>
                         <li><code>apt-get upgrade</code></li>
-                        <li>reboot your RPI</li>
+                        <li>Restart your RPI</li>
                     </ul>
                     <h3>Static IP - NOT</h3>
                     <p>Using static IPs is not good practise.</p>
@@ -104,30 +104,29 @@
                     <p>Use the following steps</p>
                     <ul>
                         <li>Type <code>sudo apt install samba</code></li>
-                        <li>Make edits to the samba config file by typing:</li>
+                        <li>Make edits to the samba config file by typing: <code>sudo nano /etc/samba/smb.conf</code></li>
+                        <li>Make the following edits:</li>
                     </ul>
-                    <p><code>sudo nano /etc/samba/smb.conf</code></p>
-                    <p>Make the following edits</p>
+                    <pre><code>
+    # CUPS printing.
+    [printers]
+    comment = All Printers
+    browseable = no
+    path = /var/spool/samba
+    printable = yes
+    guest ok = yes
+    read only = yes
+    create mask = 0700</code></pre>
 
-                    <pre><code># CUPS printing.
-[printers]
-comment = All Printers
-browseable = no
-path = /var/spool/samba
-printable = yes
-guest ok = yes
-read only = yes
-create mask = 0700
-</code></pre>
-
-<pre><code># Windows clients look for this share name as a source of downloadable
-# printer drivers
-[print$]
-comment = Printer Drivers
-path = /var/lib/samba/printers
-browseable = yes
-read only = no
-guest ok = no</code></pre>
+    <pre><code>
+    # Windows clients look for this share name as a source of downloadable
+    # printer drivers
+    [print$]
+    comment = Printer Drivers
+    path = /var/lib/samba/printers
+    browseable = yes
+    read only = no
+    guest ok = no</code></pre>
 
                     <ul>
                         <li>Save and exit the file and restart samba with <code>sudo systemctl restart smbd</code></li>
@@ -135,7 +134,7 @@ guest ok = no</code></pre>
                         <li>Get the RPI’s IP address with <code>hostname -I</code></li>
                         <li>Connect the printer to the RPI</li>
                         <li>In a browser on your computer, navigate to the IP address</li>
-                        <li>Then navigate to Administration > Add Printer</li>
+                        <li>Then navigate to <b>Administration > Add Printer</b></li>
                         <li>Enter the username and password to the RPI</li>
                         <li>Select the printer and click continue</li>
                         <li>Enable printer sharing and click continue</li>
@@ -144,12 +143,10 @@ guest ok = no</code></pre>
                 </article>
                 <article>
                     <h2>Configure Windows to the find the RPI Server</h2>
-                    <p>On your Windows Computer, navigate to:</p>
+                    <p>On your Windows Computer:</p>
                     <ul>
-                        <li>Settings > </li>
-                        <li>Bluetooth and Devices ></li>
-                        <li>Printers & Scanners ></li>
-                        <li>Click Add device and the computer should automatically discover the server.</li>
+                        <li>Navigate to: <b>Settings > Bluetooth and Devices > Printers & Scanners ></b></li>
+                        <li>Click <b>Add Device</b> and the computer should automatically discover the server.</li>
                     </ul>
                 </article>
                 <article>
