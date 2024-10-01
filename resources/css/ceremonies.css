@@ -11,3 +11,57 @@
 * {
     font-family: Arial, Helvetica, sans-serif;
 }
+
+html {
+    margin: 5px 5px;
+    overflow-x: auto;
+    width: 100%;
+}
+
+body {
+    margin: 5px 5px;
+    overflow-x: auto;
+    width: 100%;
+    text-rendering: optimizeLegibility;
+    background-color: black;
+}
+
+/* 2. typography */
+h1,
+h2,
+h3 {
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.25;
+    margin-bottom: 5px;
+    transition: font-size 0.25s ease;
+    color: yellow;
+}
+h1 {
+    font-size: 26px;
+}
+h2 {
+    font-size: 22px;
+}
+h3 {
+    font-size: 18px;
+}
+
+.role,
+.text,
+.information,
+.accompaniment {
+    font-size: 16px;
+    line-height: 23px;
+    color: white;
+}
+
+/* 3. Structure Styles */
+
+/* 4. where does this fit */
+.accompaniment {
+    visibility: hidden;
+}
+.information {
+    visibility: hidden;
+}
