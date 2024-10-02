@@ -13,13 +13,11 @@
 }
 
 html {
-    margin: 5px 5px;
     overflow-x: auto;
     width: 100%;
 }
 
 body {
-    margin: 5px 5px;
     overflow-x: auto;
     width: 100%;
     text-rendering: optimizeLegibility;
@@ -33,7 +31,7 @@ h3 {
     font-weight: 700;
     text-align: center;
     line-height: 1.25;
-    margin-bottom: 5px;
+    padding: 5px;
     transition: font-size 0.25s ease;
     color: yellow;
 }
@@ -51,17 +49,37 @@ h3 {
 .text,
 .information,
 .accompaniment {
-    font-size: 16px;
-    line-height: 23px;
+    font-size: 18px;
+    line-height: 28px;
     color: white;
 }
 
 /* 3. Structure Styles */
 
-/* 4. where does this fit */
+/* 4. module styles */
 .accompaniment {
-    visibility: hidden;
+    display: none; /* hidden for now */
 }
 .information {
-    visibility: hidden;
+    display: none; /* hidden, for now */
+    
+}
+.priest {
+    background-color: blue;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+.deacon {
+    background-color: crimson;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+.choir,
+.congregation {
+    background-color: indigo;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
 }

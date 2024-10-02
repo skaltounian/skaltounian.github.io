@@ -1,6 +1,10 @@
-// my-app.js
-console.log("What is going on?");
-let a = 4;
-let b = 54;
-let c = a + b;
-console.log(`and the total number is ${c}`)
+let humanScore = 0;
+let computerScore = 0;
+let currentRoundNumber = 1;
+
+// Write your code below:
+function generateTarget() {
+  return Math.floor(Math.random() * 10);
+}
+
+console.log(generateTarget());
