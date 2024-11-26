@@ -1,10 +1,2 @@
-let humanScore = 0;
-let computerScore = 0;
-let currentRoundNumber = 1;
-
-// Write your code below:
-function generateTarget() {
-  return Math.floor(Math.random() * 10);
-}
-
-console.log(generateTarget());
+const myString = 42;
+myString.substring(0);
