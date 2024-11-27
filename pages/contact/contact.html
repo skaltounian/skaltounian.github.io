@@ -33,6 +33,44 @@
         <main>
             <section>
                 <h2>Contact Form</h2>
+                <form action="/submit-contact" method="POST">
+                    <!-- Name Field -->
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Your Name" required><br><br>
+            
+                    <!-- Email Field -->
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" placeholder="Your Email" required><br><br>
+            
+                    <!-- Subject Dropdown -->
+                    <label for="subject">Subject:</label>
+                    <select id="subject" name="subject" required>
+                        <option value="general">General Inquiry</option>
+                        <option value="support">Support</option>
+                        <option value="idea">Project Idea</option>
+                        <option value="feedback">Feedback</option>
+                    </select><br><br>
+            
+                    <!-- Message Field -->
+                    <label for="message">Your Message:</label><br>
+                    <textarea id="message" name="message" rows="5" cols="40" placeholder="Type your message here..." required></textarea><br><br>
+            
+                    <!-- Submit Button -->
+                    <button type="submit">Send Message</button>
+                </form>
+            </section>
+            <section>
+                <h2>Our Location</h2>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d11517.2328502487!2d-79.45!3d43.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sca!4v1732744156915!5m2!1sen!2sca" 
+                    width="600" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>"
+                    
             </section>
             <section>
                 <h2>Direct Contact</h2>
