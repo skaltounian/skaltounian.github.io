@@ -14,13 +14,14 @@
             <nav class="navbar">
                 <a href="index.html" class="logo"><img src="./resources/media/SHA.JPG" alt="website logo"></a>
                 <div id="menulinks">
-                    <a href="#">Home</a>
-                    <a href="./pages/projects.html">Geekout</a>
+                    <a href="../../index.html">Home</a>
+                    <a href="../projects.html">Geekout</a>
                     <a href="#">Cheat Sheets</a>
                     <a href="#">Non-Tech Stuff</a>
-                    <a href="./pages/hymnal/patarak-am.html">Volunteerism</a>
+                    <a href="../hymnal/patarak-am.html">Volunteerism</a>
                     <a href="#">Paintings</a>
                     <a href="#">Outdoors</a>
+                    <a href="#">Contact</a>
                 </div>
                 <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -87,7 +88,14 @@
 
         </footer>
         <script>
-
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
         </script>
     </body>
 </html>
