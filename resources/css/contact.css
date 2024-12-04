@@ -1,0 +1,246 @@
+/* ======================
+    1. Global styles
+    2. Typography styles
+    3. Structure styles
+    4. Module styles
+    5. Component styles
+    6. Page styles
+========================= */ 
+
+/* 1. Global Styles ============================== */ 
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+    margin: 0 auto;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    margin: 0 auto;
+    overflow-x: hidden;
+    width: 100%;
+    text-rendering: optimizeLegibility;
+    color: dimgray;  /* text colour for p*/
+}
+
+/* 2. Typography Styles =========================== */
+code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+}
+h1,
+h2,
+h3,
+h4 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 700;
+    text-align: left;
+    line-height: 1.25;
+    margin-bottom: 15px;
+    margin-right: 40px;
+    transition: font-size 0.25s ease;
+
+    background-color: #bf871f;
+    color: white;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 25px;
+    line-height: 0.85;
+    padding: 25px 10px 25px 10px;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 0.85;
+    padding: 15px 5px 15px 5px;
+}
+h3 {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 5px 15px 5px;
+}
+
+p, 
+li {
+    font-size: 14px;
+    line-height: 23px;
+    margin: 0 0 5px;
+}
+/* 3. Structure Styles ============== */
+section {
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 15px;
+}
+
+/* 4. Module Styles ======================*/
+
+  /* 4b. Breadcrumb style ---------------- */
+  .breadcrumb {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    padding-top: 70px; /* Adjust the top so it won't be hidden under the nav bar*/
+    margin-left: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .breadcrumb li {
+    margin-right: 10px;
+  }
+  
+  .breadcrumb li a {
+    text-decoration: none;
+    color: #014029;
+  }
+  
+  .breadcrumb li a:hover {
+    text-decoration: underline;
+  }
+  
+  .breadcrumb li::after {
+    content: ">";
+    margin-left: 10px;
+    color: #014029; /* the separator */
+  }
+  
+  .breadcrumb li:last-child::after {
+    content: "";
+    margin-left: 0;
+  }
+  
+  .breadcrumb li[aria-current="page"] {
+    font-weight: bold;
+    color: #6fa696; /* the current page */
+  }
+  
+/* 4d. Footer Style --------------- */
+
+/* 5. Component Styles ================= */
+/* Buttons, Input Areas, Text Areas */
+
+/* 6. Page Styles ====================== */
+
+section {
+    padding: 20px;
+    border: 1px solid lightgray;
+    box-shadow: 2px 2px 5px lightgray;
+}
+article {
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+  
+@media screen and (min-width: 1000px) {
+    /* 4a. Navbar style --------------------- */
+    .navbar {
+        background-color: #014029;
+        overflow: hidden; /* Ensures the content stays within the navbar */
+        position: fixed; /* Fixes the navbar at the top */
+        top: 0; /* Positions the navbar at the very top */
+        width: 100%; /* Makes the navbar span the full width of the page */
+        z-index: 1000; /* Ensures the navbar stays on top of other content */
+    }
+  
+    /* configure the logo image of the page*/
+    .navbar .logo img {
+        height: 35px;
+        width: auto;
+        margin-right: 20px;
+    }
+  
+    /* configure the text on the nav bar*/
+    .navbar a {
+        float: left; /* Makes each link align horizontally */
+        display: block;
+        color: #bfb30a;
+        text-align: left;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+    /* Hide the hamburger menu on larger screens */
+    .navbar a.icon {
+        visibility: hidden;
+    }
+    
+    /* configure the hover effects of navbar text */
+    .navbar a:hover {
+        background-color: #6fa696;
+        color: white;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto 1fr;
+        grid-auto-rows: 1fr;
+        column-gap: 20px;
+    }
+    
+    .banner {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+}
+
+@media screen and (max-width: 1000px) {
+
+    /* Style the navigation menu */
+    .navbar {
+        overflow: hidden;
+        background-color: #014029;
+        position: relative;
+    }
+
+    /* Style of the logo for small screens */
+    .navbar .logo img {
+        height: 35px;
+        width: auto;
+        margin-right: 20px;
+    }
+
+    /* Hide the links inside the navigation menu (except for logo/home) */
+    .navbar #menulinks {
+        display: none;
+    } 
+  
+    /* Style navigation menu links */
+    .navbar a {
+        color: #bfb30a;
+        padding: 12px 12px;
+        text-decoration: none;
+        font-size: 16px;
+        display: block;
+    }
+  
+    /* Style the hamburger menu */
+    .navbar a.icon {
+        background: #014029;
+        display: block;
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 30px;
+    }
+  
+    /* Add a background color on mouse-over */
+    .navbar a.icon:hover {
+        background-color: #bf871f;
+        color: #014029
+    }
+/*
+    .grid-container {
+        display: list-item;
+    }
+*/
+}   
