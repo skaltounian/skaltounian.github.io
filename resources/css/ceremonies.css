@@ -29,7 +29,7 @@ h1,
 h2,
 h3 {
     font-weight: 700;
-    text-align: left;
+    text-align: center;
     line-height: 1.25;
     padding: 5px;
     transition: font-size 0.25s ease;
@@ -95,6 +95,15 @@ a {
     max-width: 500px;
 }
 
-article {
-    max-width: 500px;
+@media screen and (min-width: 1000px) {
+    article {
+        max-width: 500px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    article {
+        padding: 15px;
+        max-width: 800px;
+    }
 }
