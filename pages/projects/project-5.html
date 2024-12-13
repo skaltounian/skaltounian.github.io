@@ -54,37 +54,37 @@
                     <h3>Installing the Linux Distro</h3>
                     <p>The <a href="https://www.raspberrypi.com/software/">RPI Imager Tool</a> was very helpful in getting this done:</p>
                     <ul>
-                        <li>Raspberry Pi, headless image (no desktop)</li>
-                        <li>Configure the <code>username</code></li>
-                        <li>Configure the <code>password</code></li>
-                        <li>Used <code>/etc/os-release</code> command to confirm I had installed bullseye</li>
+                        <li>Raspberry Pi, headless image (no desktop).</li>
+                        <li>Configure the <code>username.</code></li>
+                        <li>Configure the <code>password.</code></li>
+                        <li>Used <code>/etc/os-release</code> command to confirm I had installed bullseye.</li>
                     </ul>
                     <h3>LAN Setup</h3>
                     <p>Set up the RPI LAN like so:</p>
                     <ul>
-                        <li>At the command line, type: <code>sudo raspi-config</code></li>
-                        <li>Navigate to <b>System Options > Wireless LAN</b> and configure the SSID and Passphrase for Wi-Fi</li>
-                        <li>Complete the change by selecting <code>OK</code> and exit the config menu</li>
-                        <li>You can use <code>ifgonfig</code> to check that the wireless interface is now connected</li>
-                        <li>This would be apparent if the interface for <code>wlan0</code> has an IP address</li>
-                        <li>That's because the RPI uses DHCP to obtain the IP address from your router</li>
+                        <li>At the command line, type: <code>sudo raspi-config.</code></li>
+                        <li>Navigate to <b>System Options > Wireless LAN</b> and configure the SSID and Passphrase for Wi-Fi.</li>
+                        <li>Complete the change by selecting <code>OK</code> and exit the config menu.</li>
+                        <li>You can use <code>ifconfig</code> to check that the wireless interface is now connected.</li>
+                        <li>This would be apparent if the interface for <code>wlan0</code> has an IP address.</li>
+                        <li>That's because the RPI uses DHCP to obtain the IP address from your home router.</li>
                     </ul>
                     <h3>Other Setup</h3>
                     <p>This would be a good time to complete some other configurations:</p>
                     <ul>
-                        <li>At the command line, type: <code>sudo raspi-config</code></li>
-                        <li>Change the locale to something more relevant to you</li>
-                        <li>Change the time zone to your local zone</li>
-                        <li>Enable SSH if you think you're going to use an application like PuTTY to connect to your RPI</li>
-                        <li>Change the hostname - because it's useful to differentiate your RPI from all the others in the house</li>
-                        <li>Reboot the RPI</li>
+                        <li>At the command line, type: <code>sudo raspi-config.</code></li>
+                        <li>Change the locale to something more relevant to you.</li>
+                        <li>Change the time zone to your local zone.</li>
+                        <li>Enable SSH if you think you're going to use an application like PuTTY to connect to your RPI.</li>
+                        <li>Change the hostname - because it's useful to differentiate your RPI from all the others in the house.</li>
+                        <li>Reboot the RPI.</li>
                     </ul>
                     <h3>Update the RPI</h3>
                     <p>Take the opportunity to update the RPI before continuing.</p>
                     <ul>
                         <li><code>apt-get update</code></li>
                         <li><code>apt-get upgrade</code></li>
-                        <li>Reboot the RPI</li>
+                        <li>Reboot the RPI.</li>
                     </ul>
                     <h3>Static IP - NOT</h3>
                     <p>Using static IPs is not good practise.</p>
@@ -189,7 +189,7 @@
                     </ul>
                 </article>
                 <article>
-                    <h2>Setup Backup and Restore from Windows</h2>
+                    <h2>Setup Backup and Restore on Windows</h2>
                     <h3>Simple access from Windows 11 computers</h3>
                     <ol>
                         <li>On your Windows computer, open a <b>File Explorer</b> window.</li>
