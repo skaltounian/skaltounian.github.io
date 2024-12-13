@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I built a NextCloud backup server with an RPI. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>RPI NextCloud</title>
+        <link href="../../resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="../../resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+                <a href="../../index.html" class="logo"><img src="../../resources/media/SHA.JPG" alt="website logo"></a>
+                <div id="menulinks">
+                    <a href="../../index.html">Home</a>
+                    <a href="../projects.html">Geekout</a>
+                    <a href="#">Cheat Sheets</a>
+                    <a href="#">Non-Tech Stuff</a>
+                    <a href="#">Volunteerism</a>
+                    <a href="#">Paintings</a>
+                    <a href="#">Outdoors</a>
+                </div>
+                <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="fa-solid fa-bars"></i>
+                </a>
+            </nav>
+
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../projects.html">Geekout</a></li>
+                    <li>RPI Backup Server</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="introduction">
+                <h1>Set up a NextCloud backup server with a Raspberry PI</h1>
+                <article class="intro">
+                    <h2>Introduction</h2>
+                    <p>This article describes how I set up a NextCloud back-up server using a Raspberry Pi (4).</p>
+                    <p>Just for fun.</p>
+                </article>
+            </section>
+            <section class="discussion">
+                <article>
+                    <h2>Preparing the Raspberry Pi</h2>
+                    <h3>Installing the Linux Distro</h3>
+                    <p>The <a href="https://www.raspberrypi.com/software/">RPI Imager Tool</a> was very helpful in getting this done:</p>
+                    <ul>
+                        <li>Raspberry Pi, headless image (no desktop)</li>
+                        <li>Configure the <code>username</code></li>
+                        <li>Configure the <code>password</code></li>
+                        <li>Used <code>/etc/os-release</code> command to confirm I had installed bullseye</li>
+                    </ul>
+                    <h3>LAN Setup</h3>
+                    <p>Set up the RPI LAN like so:</p>
+                    <ul>
+                        <li>At the command line, type: <code>sudo raspi-config</code></li>
+                        <li>Navigate to <b>System Options > Wireless LAN</b> and configure the SSID and Passphrase for Wi-Fi</li>
+                        <li>Complete the change by selecting <code>OK</code> and exit the config menu</li>
+                        <li>You can use <code>ifgonfig</code> to check that the wireless interface is now connected</li>
+                        <li>This would be apparent if the interface for <code>wlan0</code> has an IP address</li>
+                        <li>That's because the RPI uses DHCP to obtain the IP address from your router</li>
+                    </ul>
+                    <h3>Other Setup</h3>
+                    <p>This would be a good time to complete some other configurations:</p>
+                    <ul>
+                        <li>At the command line, type: <code>sudo raspi-config</code></li>
+                        <li>Change the locale to something more relevant to you</li>
+                        <li>Change the time zone to your local zone</li>
+                        <li>Enable SSH if you think you're going to use an application like PuTTY to connect to your RPI</li>
+                        <li>Change the hostname - because it's useful to differentiate your RPI from all the others in the house</li>
+                        <li>Reboot the RPI</li>
+                    </ul>
+                    <h3>Update the RPI</h3>
+                    <p>Take the opportunity to update the RPI before continuing.</p>
+                    <ul>
+                        <li><code>apt-get update</code></li>
+                        <li><code>apt-get upgrade</code></li>
+                        <li>Reboot the RPI</li>
+                    </ul>
+                    <h3>Static IP - NOT</h3>
+                    <p>Using static IPs is not good practise.</p>
+                    <p>A better solution is to define the hostname of the RPI on the network router and use the same name in PuTTY to connect to the RPI remotely.</p>
+                </article>
+                <article>
+                    <h2>Setup the External Drive</h2>
+                    <h3>Prepare the drive</h3>
+                    <ul>
+                        <li>Look for the drive that's connected to your RPI by typing: <code>sudo fdisk -l</code></li>
+                        <li>Look for something like this:
+                            <br><code>Device       Boot Start        End    Sectors   Size Id Type</code>
+                            <br><code>/dev/sda1          2048 1953521663 1953521663 931.5G  7 HPFS/NTFS/exFAT</code>
+                        </li>
+                        <li>Unmout the drive with the following command: <code>unmount /dev/sda1</code></li>
+                        <li>Erase and format the drive for Linux usage with: <code>sudo parted /dev/sda1</code></li>
+                        <li>The partitioner will respond with: <code>mklabel gpt</code></li>
+                        <li>If prompted to erase the drive, type <b>Y</b> and press <b>Enter</b>. Then run:
+                            <br><code>mkpart</code>
+                            <br><code>MyExternalDrive</code>
+                            <br><code>ext4</code>
+                            <br><code>0%</code>
+                            <br><code>100%</code>
+                            <br><code>quit</code>
+                        </li>
+                        <li>Then partition the frive with the following:
+                            <br><code>sudo mkfs.ext4 /dev/sda1</code>
+                        </li>
+                        <li>Press Y and Enter when asked if you want to proceed. Then run:
+                            <br><code>sudo e2label /dev/sda1 rpiExternalDrive</code>
+                        </li>
+                        <li>Formatting will take a few minutes, especially for large drives. Be patient.</li>
+                        <li>When ready, run this command and reboot the RPI:
+                            <br><code>sudo shutdown -r now</code>
+                        </li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Map the drive to a directory</h3>
+                    <p>When the RPI powers back up, type the following:
+                        <ul>
+                            <li>Confirm where the drive is: <code>sudo fdisk -l</code></li>
+                            <li>Create a mounting point: <code>sudo mkdir /media/rpiExternalDrive</code></li>
+                            <li>Mount the USP drive at that location: <code> sudo mount /dev/sda1 /media/rpiExternalDrive</code></li>
+                            <li>Confirm that the drive was mounted correctly: <code>mount | grep sda1</code></li>
+                            <li>You should see something like this: <code>/dev/sda1 on /media/rpiExternalDrive type ext4 (rw,relatime)</code></li>
+                        </ul>
+                    </p>
+                </article>
+                <article>
+                    <h3>Create permanent mp to the disk</h3>
+                    <ul>
+                        <li>Use the information from the <code>mount | grep sda1</code> command (as in the last step) to confirm the map path and disk format.</li>
+                        <li>Edit the <code>/etc/fstab</code> file and add the following 
+                            <br><code>/dev/sda1 /media/rpiExternalDrive ext4 defaults 0 0</code></li>
+                        <li>Save and exit your editor and then reboot the system.</li>
+                        <li>After the RPI powers up, you can run the mount command to confirm that the mapping survived the reboot.</li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Set permissions to the drive</h3>
+                    <p>Type the following commands to set up permissions to the drive:</p>
+                    <ul>
+                        <li><code>sudo chown -R username /media/rpiExternalDrive/</code></li>
+                        <li><code>sudo chown -R root:users /media/rpiExternalDrive/</code></li>
+                        <li><code>sudo chmod -R ug=rwx,o=rw /media/rpiExternalDrive/</code></li>
+                    </ul>
+                    <p>And your drive should be ready.</p>
+                </article>
+                <article>
+                    <h2>Install SMB</h2>
+                    <p>SMB stands for <b>Server Message Block</b>, a network protocol that allows users to share files, printers, and other resources on a network. It allows users to read, create, and update files on remote servers. It also allows applications to request services from server programs in a computer network</p>
+                    <p>Type the following commands to get going with the installation:</p>
+                    <ul>
+                        <li><code>sudo apt update</code></li>
+                        <li><code>sudo apt upgrade</code></li>
+                        <li><code>sudo apt install samba samba-common</code></li>
+                    </ul>
+                    <p>let's do some editing to the <code>/etc/samba/smb.conf</code></p>
+                    <p>Then, in text editor scroll to the bottom of the document and look for something like this:</p>
+                    <code>[UsernameBackups]
+                        <br>path = /media/rpiExternalDrive/
+                        <br>browsable = yes
+                        <br>writeable = yes
+                        <br>create mask = 0777
+                        <br>directory mask = 0777
+                        <br>public = no
+                        <br>read only = no
+                    </code>
+                    <p><br>Then save and exit.</p>
+                </article>
+                <article>
+                    <h2>Configure the User Account</h2>
+                    <ul>
+                        <li>Create a password for Samba so you can see your share from other machines.
+                            <br><code>sudo smbpasswd -a username</code>
+                        </li>
+                        <li>And follow the prompts to define the password for the user, which could be different from that of the RPI (recommended)</li>
+                        <li>Restart Samba with: 
+                            <br><code>sudo systemctl restart smbd</code>
+                        </li>
+                    </ul>
+                </article>
+                <article>
+                    <h2>Setup Backup and Restore from Windows</h2>
+                    <h3>Simple access from Windows 11 computers</h3>
+                    <ol>
+                        <li>On your Windows computer, open a <b>File Explorer</b> window.</li>
+                        <li>Type <code>\\raspberrypi\UsernameBackups</code> in the address bar.
+                        <br>Note that this is the same <b>UsernameBackups</b> that you have in the Samba config file.</li>
+                        <li>When you press <b>Enter</b>, you should be able to enter your Samba username and password, and see your shared drive.</li>
+                    </ol>
+                </article>
+                <article>
+                    <h3>Map a network drive</h3>
+                    <ol>
+                        <li>On your Windows computer, open a <b>File Explorer</b> window.</li>
+                        <li>On the left hand panel, left-click on the <b>Network</b> option.</li>
+                        <li>In the path field at the top, type <b>\\</b> followed by the hostname of the server, followed by <b>\</b> and the folder name, and press <b>Enter</b>.</li>
+                        <li>Log onto the server (if asked).</li>
+                        <li>In the right hand panel, right-click on your server (e.g. \\hostname\newExternalDrive).</li>
+                        <li>From the pop-up menu, select <b>Map Network Drive</b>.</li>
+                        <li>Pick a drive letter, and you're done!</li>
+                    </ol>
+                </article>
+
+                <article>
+                    <h2>References</h2>
+                    <li><a href="https://www.pcmag.com/how-to/how-to-turn-a-raspberry-pi-into-a-nas-for-whole-home-file-sharing">How to Turn a Raspberry Pi Into a NAS for Whole-Home File Sharing</a></li>
+                    <li><a href="https://linuxconfig.org/howto-mount-usb-drive-in-linux">How to mount USB drive in Linux</a></li>
+                </article>
+            </section>
+
+        </main>
+        <footer>
+
+        </footer>
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
