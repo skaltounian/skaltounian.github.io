@@ -79,9 +79,19 @@
                     <p>Short list of GIT commands I use regularly.</p>
                 </article>
             </section>
-            
-
         </main>
+
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
+
+        <!-- Script to include footer menu from external footer.html -->
+        <script>
+            fetch('../footer.html')
+                .then(response => response.text())
+                .then(data => {
+                document.getElementById('footer-content').innerHTML = data;
+            });
+        </script>
         <script>
             function myFunction() {
               var x = document.getElementById("menulinks");

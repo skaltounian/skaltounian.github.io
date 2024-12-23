@@ -291,9 +291,8 @@
             </section>
         </main>
 
-        <footer id='footer-content'>
-            
-        </footer>
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
 
         <!-- Script to include the menu content for this page -->
         <script>
@@ -306,7 +305,7 @@
 
         <!-- Script to include footer menu from external footer.html -->
         <script>
-            fetch('footer.html')
+            fetch('./footer.html')
               .then(response => response.text())
               .then(data => {
                 document.getElementById('footer-content').innerHTML = data;
