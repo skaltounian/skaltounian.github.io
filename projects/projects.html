@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale…">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Shahe's Geekout</title>
-        <link href="../resources/css/projectgrid.css" type="text/css" rel="stylesheet">
-        <link rel="icon" href="../resources/media/GEGHART5-32.png" type="image/png">
+        <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     </head>
     <body>
@@ -18,8 +18,8 @@
             <!-- Draw the breadcrumb on the display -->
             <nav aria-label="Breadcrumb">
                 <ul class="breadcrumb">
-                    <li><a href='./index.html'>Home</a></li>
-                    <li><a>Geekout</a></li>
+                    <li><a href='/index.html'>Home</a></li>
+                    <li><a href='/projects/projects.html'>Geekout</a></li>
                 </ul>
             </nav>
         </header>
@@ -35,17 +35,17 @@
                 <article class="project 7">
                     <h2>Colour Scheme</h2>
                     <p>Establishing the colour scheme for this website.</p>
-                    <p><a href="../pages/projects/project-7.html">Read More</a></p>
+                    <p><a href="/projects/project-7.html">Read More</a></p>
                 </article>
                 <article class="project 6">
                     <h2>Print Server</h2>
                     <p>Use a Raspberry Pi to create a WiFi printer.</p>
-                    <p><a href="../pages/projects/project-6.html">Read More</a></p>
+                    <p><a href="/projects/project-6.html">Read More</a></p>
                 </article>
                 <article class="project 5">
                     <h2>Back-up Server</h2>
                     <p>Use a Raspberry Pi to build a back-up server.</p>
-                    <p><a href="../pages/projects/project-5.html">Read More</a></p>
+                    <p><a href="/projects/project-5.html">Read More</a></p>
                 </article>
                 <article class="project 4">
                     <h2>Music Streamer</h2>
@@ -71,7 +71,7 @@
 
         <!-- Script to include the menu content for this page -->
         <script>
-            fetch('./menu.html')
+            fetch('/menu.html')
               .then(response => response.text())
               .then(data => {
                 document.getElementById('navbar').innerHTML = data;
@@ -80,12 +80,14 @@
 
         <!-- Script to include footer menu from external footer.html -->
         <script>
-            fetch('./footer.html')
+            fetch('/footer.html')
                 .then(response => response.text())
                 .then(data => {
                 document.getElementById('footer-content').innerHTML = data;
             });
         </script>
+
+        <!-- Script for the hamburger menu -->
         <script>
             function myFunction() {
               var x = document.getElementById("menulinks");
