@@ -15,31 +15,15 @@
 
         <!-- The header with navigation and breadcrumbs -->
         <header>
-            <nav class="navbar">
-                <a href="index.html" class="logo"><img src="./resources/media/SHA.JPG" alt="website logo"></a>
-                <div id="menulinks">
-                    <a href="./index.html">Home</a>
-                    <a href="./pages/projects.html">Geekout</a>
-                    <a href="#">Cheat Sheets</a>
-                    <a href="#">Non-Tech Stuff</a>
-                    <a href="./pages/hymnal/patarak-am.html">Volunteerism</a>
-                    <a href="#">Paintings</a>
-                    <a href="#">Outdoors</a>
-                    <a href="./pages/contact.html">Contact</a>
-                </div>
-                <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
-                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa-solid fa-bars"></i>
-                </a>
-            </nav>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
 
             <!-- Draw the breadcrumb on the display -->
             <nav aria-label="Breadcrumb">
                 <ul class="breadcrumb">
-                    <li><a href='../index.html'>Home (my breadcrumb)</a></li>
+                    <li><a href='./index.html'>Home (my breadcrumb)</a></li>
                 </ul>
             </nav>
-
         </header>
 
         <!-- Main body of the home page -->
@@ -74,6 +58,7 @@
                         <li>Use the <code>document.getElementById</code> to insert the data in the intended location.</li>
                         <li>Create a footer file that is common to multiple pages.</li>
                         <li>Move the menu to an external file and reuse in multipe pages.</li>
+                        <li>Sort out page hirearchy and links in the menu and the breadcrumb.</li>
                         <li>Move the js scripts from this file to another in the scripts folder</li>
                         <li>Reuse the scripts for multiple imports - still have to learn how to do it.</li>
                     </ol>
@@ -315,7 +300,7 @@
             fetch('menu.html')
               .then(response => response.text())
               .then(data => {
-                document.getElementById('menu').innerHTML = data;
+                document.getElementById('navbar').innerHTML = data;
               });
         </script>
 

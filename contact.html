@@ -13,31 +13,13 @@
     </head>
     <body>
         <header>
-            <nav class="navbar">
-                <!-- the logo linked to home (index.html) -->
-                <a href="../index.html" class="logo"><img src="../resources/media/SHA.JPG" alt="website logo"></a>
-                
-                <!-- the links on the menu -->
-                <div id="menulinks">
-                    <a href="../index.html">Home</a>
-                    <a href="./projects.html">Geekout</a>
-                    <a href="#">Cheat Sheets</a>
-                    <a href="#">Non-Tech Stuff</a>
-                    <a href="./hymnal/patarak-am.html">Volunteerism</a>
-                    <a href="#">Paintings</a>
-                    <a href="#">Outdoors</a>
-                    <a href="#">Contact</a>
-                </div>
-                <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
-                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-                    <i class="fa-solid fa-bars"></i>
-                </a>
-            </nav>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
             
             <!-- Draw the breadcrumb on the display -->
             <nav aria-label="Breadcrumb">
                 <ul class="breadcrumb">
-                    <li><a href='../index.html'>Home</a></li>
+                    <li><a href='./index.html'>Home</a></li>
                     <li><a>Contact</a></li>
                 </ul>
             </nav>
@@ -98,10 +80,27 @@
 
             </section>
         </main>
-        <footer>
+        
+        <!-- This is the Footer of the "contacts" page. Content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
 
-        </footer>
+        <!-- Script to include the menu content for this page -->
+        <script>
+            fetch('./menu.html')
+              .then(response => response.text())
+              .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+              });
+        </script>
 
+        <!-- Script to include footer menu from external footer.html -->
+        <script>
+            fetch('./footer.html')
+              .then(response => response.text())
+              .then(data => {
+                document.getElementById('footer-content').innerHTML = data;
+              });
+        </script>
         <script>
             function myFunction() {
               var x = document.getElementById("menulinks");
