@@ -5,6 +5,7 @@
     4. Module styles
     5. Component styles
     6. Page styles
+    -----
 ========================= */ 
 
 /* 1. Global Styles ============================== */ 
@@ -27,6 +28,11 @@ body {
 }
 
 /* 2. Typography Styles =========================== */
+code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+}
+
 h1,
 h2,
 h3,
@@ -65,6 +71,7 @@ ol li {
     line-height: 25px;
     margin: 0 0 5px;
 }
+
 
 /* 3. Structure Styles ============== */
 section {

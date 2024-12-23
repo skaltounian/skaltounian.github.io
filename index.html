@@ -18,7 +18,7 @@
             <nav class="navbar">
                 <a href="index.html" class="logo"><img src="./resources/media/SHA.JPG" alt="website logo"></a>
                 <div id="menulinks">
-                    <a href="#">Home</a>
+                    <a href="./index.html">Home</a>
                     <a href="./pages/projects.html">Geekout</a>
                     <a href="#">Cheat Sheets</a>
                     <a href="#">Non-Tech Stuff</a>
@@ -33,13 +33,13 @@
                 </a>
             </nav>
 
+            <!-- Draw the breadcrumb on the display -->
             <nav aria-label="Breadcrumb">
                 <ul class="breadcrumb">
-                    <li><a href='#'>Home (breadcrumb)</a></li>
+                    <li><a href='../index.html'>Home (my breadcrumb)</a></li>
                 </ul>
             </nav>
 
-            <div id="menu"></div>
         </header>
 
         <!-- Main body of the home page -->
@@ -64,6 +64,22 @@
                         <li>Paintings and art</li>
                         <li>The great outdoors</li>
                     </ol>
+                </article>
+                <article id="current-project">
+                    <h2>Current Project</h2>
+                    <p>I recently learned to modularise my pages. I just broke out my footer content into a new file, and am using a js to fetch the content into this and other pages.</p>
+                    <p>By the time this is done, I will have:</p>
+                    <ol>
+                        <li>Use the <code>fetch</code> command to read data from another file.</li>
+                        <li>Use the <code>document.getElementById</code> to insert the data in the intended location.</li>
+                        <li>Create a footer file that is common to multiple pages.</li>
+                        <li>Move the menu to an external file and reuse in multipe pages.</li>
+                        <li>Move the js scripts from this file to another in the scripts folder</li>
+                        <li>Reuse the scripts for multiple imports - still have to learn how to do it.</li>
+                    </ol>
+                    <h3>Local Server</h3>
+                    <p>While implementing this feature, I learned that when working with <code>fetch()</code> on local files, the browser may block the request due to security restrictions. This means <code>fetch()</code> will not work when directly opening an HTML file via <code>file://</code>.</p>
+                    <p>The solution was to set up a local server on my computer, then test again. And it worked!!</p>
                 </article>
             </section>
             <section>
