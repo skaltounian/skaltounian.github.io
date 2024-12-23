@@ -38,6 +38,8 @@
                     <li><a href='#'>Home (breadcrumb)</a></li>
                 </ul>
             </nav>
+
+            <div id="menu"></div>
         </header>
 
         <!-- Main body of the home page -->
@@ -255,7 +257,6 @@
                             </tr>
                         </tbody>
                     </table>
-
                     <h3>Accessibility</h3>
                     <table class="styled-table">
                         <thead>
@@ -290,10 +291,29 @@
             </section>
         </main>
 
-        <footer>
-            <p></p>
+        <footer id='footer-content'>
+            
         </footer>
 
+        <!-- Script to include the menu content for this page -->
+        <script>
+            fetch('menu.html')
+              .then(response => response.text())
+              .then(data => {
+                document.getElementById('menu').innerHTML = data;
+              });
+        </script>
+
+        <!-- Script to include footer menu from external footer.html -->
+        <script>
+            fetch('footer.html')
+              .then(response => response.text())
+              .then(data => {
+                document.getElementById('footer-content').innerHTML = data;
+              });
+        </script>
+
+        <!-- Script for the menu links used in the hamburger ?? -->
         <script>
             function myFunction() {
               var x = document.getElementById("menulinks");

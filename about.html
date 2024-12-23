@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About</title>
+</head>
+<body>
+  <div id='external-menu'></div>
+  <div id='internal-constant'></div>
+  <h1>About Us</h1>
+  <script>
+    fetch('menu.html')
+      .then(response => {
+        if(!response.ok){
+          throw new Error('Failed to load menu content.')
+        }
+        return response.text(); // retrieve the html as plain text
+      })
+      .then(data => {
+        // insert the content into the main html file
+        document.getElementById('external-menu').innerHTML = data;
+      })
+  </script>
+  <script>
+    bob = '<h2>This is a local constant</h2>';
+    document.getElementById('internal-constant').innerHTML = bob;
+  </script>
+</body>
+</html>
