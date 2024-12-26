@@ -69,23 +69,11 @@
         <!-- Footer content is fetched from external file = footer.html -->
         <footer id='footer-content'></footer>
 
-        <!-- Script to include the menu content for this page -->
-        <script>
-            fetch('/menu.html')
-              .then(response => response.text())
-              .then(data => {
-                document.getElementById('navbar').innerHTML = data;
-              });
-        </script>
+        <!-- Script to insert menu/navbar content for this page -->
+        <script>insertContentById('/menu.html', 'navbar');</script>
 
-        <!-- Script to include footer menu from external footer.html -->
-        <script>
-            fetch('/footer.html')
-                .then(response => response.text())
-                .then(data => {
-                document.getElementById('footer-content').innerHTML = data;
-            });
-        </script>
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
 
         <!-- Script for the hamburger menu -->
         <script>
@@ -98,6 +86,5 @@
               }
             }
         </script>
-
     </body>
 </html>

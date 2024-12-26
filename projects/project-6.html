@@ -10,6 +10,7 @@
         <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
         <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script type="text/javascript" src="/resources/jscripts/scripts.js"></script>
     </head>
     <body>
         <header>
@@ -149,24 +150,13 @@
         <!-- Footer content is fetched from external file = footer.html -->
         <footer id='footer-content'></footer>
 
-        <!-- Script to include the menu content for this page -->
-        <script>
-            fetch('/menu.html')
-                .then(response => response.text())
-                .then(data => {
-                document.getElementById('navbar').innerHTML = data;
-                });
-        </script>
+        <!-- Script to insert menu/navbar content for this page -->
+        <script>insertContentById('/menu.html', 'navbar');</script>
 
-        <!-- Script to include footer menu from external footer.html -->
-        <script>
-            fetch('/footer.html')
-                .then(response => response.text())
-                .then(data => {
-                document.getElementById('footer-content').innerHTML = data;
-            });
-        </script>
-       
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
+
+        <!-- Script for the menu links used in the hamburger ?? -->
         <script>
             function myFunction() {
               var x = document.getElementById("menulinks");
