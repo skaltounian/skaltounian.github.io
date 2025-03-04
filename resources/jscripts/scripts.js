@@ -14,3 +14,13 @@ function insertContentById(fileName, idName) {
         document.getElementById(idName).innerHTML = data;
     });
 }
+
+/** Script for the menu links used in the hamburger */
+function myFunction(idName) {
+    var x = document.getElementById(idName);
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        x.style.display = "block";
+    }
+}
