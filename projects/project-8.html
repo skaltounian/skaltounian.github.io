@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I reset the password on my test WordPress account. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Website Colours</title>
+        <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script type="text/javascript" src="/resources/jscripts/scripts.js"></script>
+    </head>
+    <body>
+        <header>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
+
+            <!-- Breadcrumb links -->
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projects/projects.html">Geekout</a></li>
+                    <li>Reset WordPress Password</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="introduction">
+                <h1>Reset the Password on a WordPress Account</h1>
+                <article class="Intro">
+                    <h2>Introduction</h2>
+                    <p>I happened to forget my admin password after some time of not using the account. I used ChatGPT to create the instructions to change the password. ChatGPT gave me a few options. Below is the option I picked to get my database to working order.</p>
+                </article>
+            </section>
+            <section class="discussion">
+                <article>
+                    <h2>Instructions</h2>
+                    <h3>Install WP-CLI</h3>
+                    <p>If you don't already have WP-CLI on your WordPress server, use the following instructions to do just that.</p>
+                    <ul>
+                        <li>Download the <b>wp-cli.phar</b> file: <br><code>sudo curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar</code></li>
+                        <li>Make the file executable with: <br><code>sudo chmod +x wp-cli.phar</code></li>
+                        <li>Move the file to a directory in your path with: <br><code>sudo mv wp-cli.phar /usr/local/bin/wp</code></li>
+                        <li>Verify that WP-CLI works with: <br><code>wp --info</code></li>
+                        <li>You should see an output similar to this:
+                                <code>OS:      Linux 6.6.74+rpt-rpi-v8 #1 SMP PREEMPT Debian 1:6.6.74-1+rpt1 (2025-01-27) aarch64<br>
+                                    Shell:   /bin/bash<br>
+                                    PHP binary:      /usr/bin/php8.2<br>
+                                    PHP version:     8.2.26<br>
+                                    php.ini used:    /etc/php/8.2/cli/php.ini<br>
+                                    MySQL binary:    /usr/bin/mysq1<br>
+                                    MySQL version:   mysql Ver 15.1 Distrib 10.11.6-MariaDB, for debian-linux-gnu (aarch64) using Edit<br>
+                                    Line wrapper<br>
+                                    SQL modes:<br>
+                                    WP-CLI root dir:      phar://wp-cli.phar/vendor/wp-cli/wp-cli<br>
+                                    WP-CLI vendor dir:    phar://wp-cli.phar/vendor<br>
+                                    WP CLI phar path:     /var/www/html<br>
+                                    WP-CLI packages dir:<br>
+                                    WP-CLI cache dir:     /home/username/.wp-cli/cache<br>
+                                    WP-CLI global config:<br>
+                                    WP-CLI project config:<br>
+                                    WP-CLI version: 2.11.0<br>
+                                </code>
+                            </li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Change Password With WP-CLI</h3>
+                    <p>Follow these simple steps to change the password on your WordPress Server.</p>
+                    <ul>
+                        <li>Switch to your WordPress directory with the following command: <br><code>cd /path/to/your/wordpress</code></li>
+                        <li>You can confirm that you are in the correct directory if you have the file named <br><code>wp-config.php</code></li>
+                        <li>Once installed, list the users with: <code>wp user list</code></li>
+                        <li>You should see a table with the configured usernames and roles.</li>
+                        <li>Use the following command to change the password, where <b>admin</b> is the desired user name, which you can pick up from the output of the previous command:<br><code>wp user update admin --user_pass=newpassword</code></li>
+                        <li>You should see a message like the following: <br><code>Success: Updated user 1</code></li>
+                        <li>Use your browser to log in with the new password.</li>
+                    </ul>
+                </article>
+            </section>
+        </main>
+
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
+
+        <!-- Script to insert menu/navbar content for this page -->
+        <script>insertContentById('/menu.html', 'navbar');</script>
+
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
+
+        <!-- Script for the hamburger menu -->
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
