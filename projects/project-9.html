@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I added email support to WordPress. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Wordpress Email</title>
+        <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script type="text/javascript" src="/resources/jscripts/scripts.js"></script>
+    </head>
+    <body>
+        <header>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
+
+            <!-- Breadcrumb links -->
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projects/projects.html">Geekout</a></li>
+                    <li>Email Support to WordPress</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="introduction">
+                <h1>Add Email Support to WordPress</h1>
+                <article class="Intro">
+                    <h2>Introduction</h2>
+                    <p>Instructions to add email support to my WordPress site.</p>
+                </article>
+            </section>
+            <section class="discussion">
+                <article>
+                    <h2>Instructions</h2>
+                    <h3>Install WP Mail SMTP Plug-in</h3>
+                    <p>Install the WordPress Mail SMTP plug-in using the following steps:</p>
+                    <ul>
+                        <li>Log onto your WordPress dashboard</li>
+                        <li>Go to plug-ins and click <b>Add New</b></li>
+                        <li>Search for <b>WP Mail SMTP</b></li>
+                        <li>Click on <b>Install</b> and then <b>Activate</b></li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Configure WP Mail SMTP</h3>
+                    <p>Now it's time to configure the SMTP plug-in.</p>
+                    <ul>
+                        <li>After you activate the plug-in, you’ll see a Welcome page to help you with the setup.</li>
+                        <li>Click on Let’s Get Started</li>
+                        <li>Choose your preferred SMTP Mailer. I picked Gmail for my experiment.</li>
+                        <li>You might get a warning that Gmail mailer is only good for low volumes of emails.</li>
+                        <li>Click <b>Continue</b> to proceed to configure Mailer Settings.</li>
+                        <li>That page provides instructions on how to set up the Gmail mailer.</li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Set up Google Cloud Service</h3>
+                    <p>WordPress provides pretty good documentation on this part of the setup. You can find it <a href="https://wpmailsmtp.com/docs/how-to-set-up-the-gmail-mailer-in-wp-mail-smtp/?utm_source=WordPress&utm_medium=plugin-settings&utm_campaign=liteplugin&utm_locale=en_ca&utm_content=Gmail%20documentation">here!</a></p>
+                    <ul>
+                        <li>Open an new tab and navigate to <b>Google Cloud Services</b>.</li> 
+                        <li>Create a new project and then follow the instructions</li>
+                        <li>Enable API for the project</li>
+                        <li>Enable Gmail API</li>
+                        <li>Create credentials</li>
+                        <li>Select User Data API and Click <b>Next</b></li>
+                        <li>Configure <b>OAuth Consent Screen</b></li>
+                        <li>Then configure <b>OAuth Client ID</b></li>
+                        <li>Configure <b>Authorized Redirect URIs</b>. You can copy the Redirect URI from the WordPress Mail SMTP configuration page</li>
+                        <li>Press <b>Create</b></li>
+                        <li>Download the configuration credentials json file. This file contains the <b>Client ID</b> and <b>Client Secret</b> that you need to complete the configuration on WordPress.</li>
+                        <li>Be sure to change the <b>Publishing Status</b> to <b>In Production</b></li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Complete the WP Mail SMTP Configuration</h3>
+                    <p>We're almost there. Go back to your WordPress SMTP configuration page.</p>
+                    <ul>
+                        <li>Copy and paste the <b>Client ID</b> and <b>Client Secret</b> from the JSON file into the SMTP configuration page</li>
+                        <li>Save Settings</li>
+                        <li>You’ll be asked to authenticate on Google with the Gmail account</li>
+                        <li>You might get a warning during authentication. Deal with that as you see fit.</li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Send a Test Email</h3>
+                    <ul>
+                        <li>Navigate to the WP Mail SMTP > Tools > Email Test</li>
+                        <li>Click <b>Send Email</b></li>
+                        <li>If configured properly, WordPress should declare success, and you should receive an email in a few seconds</li>
+                    </ul>
+                </article>
+            </section>
+        </main>
+
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
+
+        <!-- Script to insert menu/navbar content for this page -->
+        <script>insertContentById('/menu.html', 'navbar');</script>
+
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
+
+        <!-- Script for the hamburger menu -->
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
