@@ -101,7 +101,7 @@
                 <article>
                     <h3>Create the User and Group</h3>
                     <p>Run the following command:</p>
-                    <p><code>sudo useradd -r -s /bin/false navidrome</code></p>
+                    <p><code>> sudo useradd -r -s /bin/false navidrome</code></p>
                     <p>This will:</p>
                     <ul>
                         <li>Create the navidrome user</li>
@@ -192,7 +192,7 @@
                     <p><code>> sudo systemctl daemon-reload</code></p>
                     <p><code>> sudo systemctl start navidrome.service</code></p>
                     <p><code>> sudo systemctl status navidrome.service</code></p>
-                    <p>If the stervice started correctly, verify you can access <code>http://localhost:4533</code>, of if using the browser on another computer, type: <code>http://hostname.local:4533</code></p>
+                    <p>If the service started correctly, verify you can access <code>http://localhost:4533</code>, of if using the browser on another computer, type: <code>http://hostname.local:4533</code></p>
                     <p>To configure Navidrome to start automatically on a reboot, type:</p>
                     <p><code>> sudo systemctl enable navidrome.service</code></p>
                 </article>
