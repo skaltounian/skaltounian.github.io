@@ -6,7 +6,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale…">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>RPI NextCloud</title>
+        <title>RPI Navidrome</title>
         <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
         <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -40,12 +40,12 @@
                 <article>
                     <h2>What's Different About This Project</h2>
                     <h3>Using AI to create the instructions</h3>
-                    <p>I used to have a Madsonic music server, which stopped working when I upgraded the Linux distro to Bookworm. I'm pretty certain that the main reason was the java version. Madsonic needed version 8, but it wasn't available for me to install any more.</p>
-                    <p>I asked my friendly neighbourhood ChatGPT if it could recommend a new streamer that I could use to listen to my own music.</p>
-                    <p>ChatGPT was kind enough to generate a table of various products, compare the features and voila! There was Navidrom.</p>
-                    <p>I found the installation instructions on the Navidrome website, and an alternatie method on Pi My Life Up.</p>
+                    <p>I used to have a Madsonic music server, which stopped working when I upgraded the Linux distro of the RPI to Bookworm. I'm pretty certain that the reason was the java version. Madsonic needed version 8, but it wasn't available for me to install any more.</p>
+                    <p>I asked my friendly neighbourhood ChatGPT if it could recommend a new music streamer that I could use to listen to my own music.</p>
+                    <p>ChatGPT was kind enough to generate a table of various products, compare the features and voila! There was Navidrome.</p>
+                    <p>I found the installation instructions on the Navidrome website, and an alternatie method on <a href="https://pimylifeup.com/">Pi My Life Up.</a></p>
                     <p>But I decided to do something different and see how far I could get with ChatGPT, so I asked it to create instructions for me to get Navidrome working on my RPI.</p>
-                    <p>The initial instructions were pretty straightforward, but I also had discussions with the tool to clarify some steps, or explain ideas that weren't clear in my head.</p>
+                    <p>The initial instructions were pretty straightforward, but I also had discussions with the tool to clarify some steps, or explain ideas that weren't clear to me.</p>
                     <p>Below are the results of my discussions with ChatGPT</p>
                 </article>
 
@@ -81,11 +81,9 @@
                     </ul>
                     <h3>Update the RPI</h3>
                     <p>Take the opportunity to update the RPI before continuing.</p>
-                    <ul>
-                        <li><code>apt-get update</code></li>
-                        <li><code>apt-get upgrade</code></li>
-                        <li>Reboot the RPI.</li>
-                    </ul>
+                    <p><code>> apt-get update</code></p>
+                    <p><code>> apt-get upgrade</code></p>
+                    <p>Reboot the RPI.</p>
                     <h3>Static IP - NOT</h3>
                     <p>Using static IPs is not good practise.</p>
                     <p>A better solution is to define the hostname of the RPI on the network router and use the same name in PuTTY to connect to the RPI remotely.</p>
@@ -95,11 +93,9 @@
                     <h2>Install the Music Server</h2>
                     <h3>Update and install the prerequisites</h3>
                     <p>Ensure your system is up to date and install ffmpeg:</p>
-                    <ul>
-                        <li><code>sudo apt update</code></li>
-                        <li><code>sudo apt upgrade</code></li>
-                        <li><code>sudo apt install vim ffmpeg</code></li>
-                    </ul>
+                    <p><code>> sudo apt update</code></p>
+                    <p><code>> sudo apt upgrade</code></p>
+                    <p><code>> sudo apt install vim ffmpeg</code></p>
                 </article>
 
                 <article>
@@ -113,44 +109,40 @@
                         <li>Prevent the user from logging in (/bin/false shell)</li>
                     </ul>
                     <p>check if the user exists by typing this at the prompt:</p>
-                    <p><code>id navidrome</code></p>
+                    <p><code>> id navidrome</code></p>
                     <p>You should see something like this:</p>
-                    <p><code>uid=999(navidrome) gid=992(navidrome) groups=992(navidrome)</code></p>
+                    <p><code>> uid=999(navidrome) gid=992(navidrome) groups=992(navidrome)</code></p>
                 </article>
 
                 <article>
                     <h3>Create Directory Structure</h3>
                     <p>Run these commands to ensure the directories exist:</p>
-                    <ul>
-                        <li><code>sudo mkdir -p /var/lib/navidrome</code></li>
-                        <li><code>sudo mkdir -p /media/usb  # Adjust if needed for your USB mount</code></li>
-                    </ul>
+                    <p><code>> sudo mkdir -p /var/lib/navidrome</code></p>
+                    <p><code>> sudo mkdir -p /media/usb  # Adjust if needed for your USB mount</code></p>
                     <p>-p ensures that the directories and any missing parent directories are created.</p>
                     <p>Now, make sure Navidrome owns its required directories:</p>
-                    <ul>
-                        <li><code>sudo chown -R navidrome:navidrome /var/lib/navidrome</code></li>
-                        <li><code>sudo chown -R navidrome:navidrome /media/usb  # Adjust if needed</code></li>
-                    </ul>
+                    <p><code>> sudo chown -R navidrome:navidrome /var/lib/navidrome</code></p>
+                    <p><code>> sudo chown -R navidrome:navidrome /media/usb  # Adjust if needed</code></p>
                     <p>Once this is done, you can continue with the installation.</p>
                 </article>
 
                 <article>
                     <h3>Configure the USB</h3>
-                    <p>We're assuming that your music (MP#, etc.) is on a USB-drive, attached directly to your RPI.</p>
+                    <p>We're assuming that your music (MP#, etc.) is on a USB-drive, connected directly to your RPI.</p>
                     <p>Since you're using a headless Debian Bookworm setup, you need to properly configure your USB drive so that it automounts and is accessible after every reboot.</p>
                     <p>Plug in your USB-dive and identify it by running:</p>
-                    <p><code>lsblk</code></p>
+                    <p><code>> lsblk</code></p>
                     <p>Look for your USB device. It will likely be named something like <code>/dev/sda1</code>.</p>
                     <p>Choose a permanent location to mount the USB-drive:</p>
-                    <p><code>sudo mkdir -p /media/usb</code></p>
+                    <p><code>> sudo mkdir -p /media/usb</code></p>
                     <p>Get the UUID of your USB drive with: <code>ls -l /dev/disk/by-uuid/</code></p>
                     <p>You will see an output similar to this:</p>
-                    <p><code>lrwxrwxrwx 1 root root 10 Mar 1 20:59 1234-5678-ABCD -> ../../sda1</code></p>
+                    <p><code>> lrwxrwxrwx 1 root root 10 Mar 1 20:59 1234-5678-ABCD -> ../../sda1</code></p>
                     <p>Add the USB-Drive to fstab (Permanent Mount). Edit the /etc/fstab file:</p>
-                    <p><code>sudo nano /etc/fstab</code></p>
+                    <p><code>> sudo nano /etc/fstab</code></p>
                     <p>For exFAT or FAT32 drives, add this line at the bottom of the file:</p>
-                    <p><code>UUID=1234-ABCD /media/usb vfat defaults,uid=1000,gid=1000,umask=000,auto,nofail 0 0</code></p>
-                    <p>Save and exist (ctrl-O, ctrl-X)</p>
+                    <p><code>> UUID=1234-ABCD /media/usb vfat defaults,uid=1000,gid=1000,umask=000,auto,nofail 0 0</code></p>
+                    <p>Save and exit (ctrl-O, ctrl-X)</p>
                     <p>Test the mount with: <code>sudo mount -a</code></p>
                     <p>Then check: <code>ls /media/usb</code></p>
                     <p>If you see your media files, then the setup is correct.</p>
@@ -161,52 +153,48 @@
                 <article>
                     <h3>Get Navidrome</h3>
                     <p>Download the latest release from the releases page, extract the contents to the executable directory, and set the permissions for the files. (Replace the URL below with the one from the releases page):</p>
-                    <p><code>wget https://github.com/navidrome/navidrome/releases/download/v0.54.5/navidrome_0.54.5_linux_arm64.deb</code></p>
+                    <p><code>> wget https://github.com/navidrome/navidrome/releases/download/v0.54.5/navidrome_0.54.5_linux_arm64.deb</code></p>
                     <p>Before you install, you can check that you have a valid Debian file by typing:</p>
-                    <p><code>file navidrome_*.deb</code></p>
+                    <p><code>> file navidrome_*.deb</code></p>
                     <p>and look for this output:</p>
-                    <p><code>navidrome_0.50.1_Linux_armv7.deb: Debian binary package (format 2.0)</code></p>
+                    <p><code>> navidrome_0.50.1_Linux_armv7.deb: Debian binary package (format 2.0)</code></p>
                 </article>
 
                 <article>
                     <h3>Start and enable Navidrome</h3>
                     <p>Navidrome should now be installed as a systemd service. Run:</p>
-                    <ul>
-                        <li>sudo systemctl enable navidrome</li>
-                        <li>sudo systemctl start navidrome</li>
-                    </ul>
+                    <p><code>> sudo systemctl enable navidrome</code></p>
+                    <p><code>> sudo systemctl start navidrome</code></li>
                     <p>And check the status with:</p>
-                    <p><code>sudo systemctl status navidrome</code></p>
+                    <p><code>> sudo systemctl status navidrome</code></p>
                     <p>If it says <code>active (running)</code>, then you're good.</p>
                     <p>If it says <code>active (exited)</code>, then try to restart with:</p>
-                    <p><code>sudo systemctl restart navidrome</code></p>
+                    <p><code>> sudo systemctl restart navidrome</code></p>
                 </article>
 
                 <article>
                     <h3>Create Navidrome configuration file</h3>
                     <p>The config.toml file is Navidrome's main configuration file, used to set various options such as the music folder location, port number, logging options, transcoding settings, and user authentication.</p>
                     <p>In the working directory, /var/lib/navidrome create a new file named navidrome.toml with the following settings.</p>
-                    <p><code>sudo nano /etc/navidrome/navidrome.toml</code></p>
-                    <p>Add the following line in the file. Adjust the past as necessary.</p>
+                    <p><code>> sudo nano /etc/navidrome/navidrome.toml</code></p>
+                    <p>Add the following line in the file. Adjust the path as necessary.</p>
                     <p>
                         <code>
-                        MusicFolder = "/mnt/usb"
-                        Address = "0.0.0.0"
+                        MusicFolder = "/mnt/usb"<br>
+                        Address = "0.0.0.0"<br>
                         Port = 4533
                         </code>
                     </p>
                 </article>
                 <article>
                     <h3>Start the server</h3>
-                    <p>type the following commands:</p>
-                    <ul>
-                        <li>sudo systemctl daemon-reload</li>
-                        <li>sudo systemctl start navidrome.service</li>
-                        <li>sudo systemctl status navidrome.service</li>
-                    </ul>
+                    <p>Type the following commands:</p>
+                    <p><code>> sudo systemctl daemon-reload</code></p>
+                    <p><code>> sudo systemctl start navidrome.service</code></p>
+                    <p><code>> sudo systemctl status navidrome.service</code></p>
                     <p>If the stervice started correctly, verify you can access <code>http://localhost:4533</code>, of if using the browser on another computer, type: <code>http://hostname.local:4533</code></p>
                     <p>To configure Navidrome to start automatically on a reboot, type:</p>
-                    <p><code>sudo systemctl enable navidrome.service</code></p>
+                    <p><code>> sudo systemctl enable navidrome.service</code></p>
                 </article>
                 <article>
                     <h3>What was that?</h3>
