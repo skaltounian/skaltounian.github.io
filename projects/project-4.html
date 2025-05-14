@@ -135,15 +135,18 @@
                     <p>Look for your USB device. It will likely be named something like <code>/dev/sda1</code>.</p>
                     <p>Choose a permanent location to mount the USB-drive:</p>
                     <p><code>> sudo mkdir -p /media/usb</code></p>
-                    <p>Get the UUID of your USB drive with: <code>ls -l /dev/disk/by-uuid/</code></p>
+                    <p>Get the UUID of your USB drive with:</p>
+                    <p><code>> ls -l /dev/disk/by-uuid/</code></p>
                     <p>You will see an output similar to this:</p>
                     <p><code>> lrwxrwxrwx 1 root root 10 Mar 1 20:59 1234-5678-ABCD -> ../../sda1</code></p>
                     <p>Add the USB-Drive to fstab (Permanent Mount). Edit the /etc/fstab file:</p>
                     <p><code>> sudo nano /etc/fstab</code></p>
                     <p>For exFAT or FAT32 drives, add this line at the bottom of the file:</p>
-                    <p><code>> UUID=1234-ABCD /media/usb vfat defaults,uid=1000,gid=1000,umask=000,auto,nofail 0 0</code></p>
+                    <p><code>> UUID=1234-ABCD /media/usb vfat defaults,nofail 0 2</code></p>
                     <p>Save and exit (ctrl-O, ctrl-X)</p>
-                    <p>Test the mount with: <code>sudo mount -a</code></p>
+                    <p>Test if the mount works without a reboot by typing: <code>sudo mount -a</code></p>
+                    <p>This last command won't return anything if things go as planned.</p>
+                    <p>You can type <code>df -h</code> to see if your mount is listed.</p>
                     <p>Then check: <code>ls /media/usb</code></p>
                     <p>If you see your media files, then the setup is correct.</p>
                     <p>Reboot the RPI with <code>sudo reboot</code></p>
