@@ -146,7 +146,18 @@
                     <p>Save and exit (ctrl-O, ctrl-X)</p>
                     <p>Test if the mount works without a reboot by typing: <code>sudo mount -a</code></p>
                     <p>This last command won't return anything if things go as planned.</p>
-                    <p>You can type <code>df -h</code> to see if your mount is listed.</p>
+                    <p>Then type <code>df -h</code> to see a listing of mounts. Here, the USB is on the last row:</p>
+                    <p><code>
+                        Filesystem       Size  Used Avail Use% Mounted on<br>
+                        udev             318M     0  318M   0% /dev<br>
+                        tmpfs             91M  1.1M   90M   2% /run<br>
+                        /dev/mmcblk0p2    28G  4.0G   23G  16% /<br>
+                        tmpfs            454M     0  454M   0% /dev/shm<br>
+                        tmpfs            5.0M   12K  5.0M   1% /run/lock<br>
+                        /dev/mmcblk0pl   510M   66M  445M  13% /boot/firmware<br>
+                        tmpfs             91M     0   91M   9% /run/user/1000<br>
+                        /dev/sda1         29G   16G   14G  55% /media/usb
+                    </code></p>
                     <p>Then check: <code>ls /media/usb</code></p>
                     <p>If you see your media files, then the setup is correct.</p>
                     <p>Reboot the RPI with <code>sudo reboot</code></p>
