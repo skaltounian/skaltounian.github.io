@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I installed Navidrome using containers. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Navidrome Container</title>
+        <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script type="text/javascript" src="/resources/jscripts/scripts.js"></script>
+    </head>
+    <body>
+        <header>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
+
+            <!-- Breadcrumb links -->
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projects/projects.html">Geekout</a></li>
+                    <li>Navidrome with Docker Container</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="introduction">
+                <h1>Install Navidrome Using Docker Container</h1>
+                <article class="Intro">
+                    <h2>Introduction</h2>
+                    <p>I created this project to free up one of my Raspberry Pis by installing the Navidrome music server on the RPi where I host another one of my projects. Plus, I needed some way of exercising with Docker and using containers.</p>
+                </article>
+            </section>
+            <section class="discussion">
+                <article>
+                    <img src="/resources/media/dockerhub.navidrome.heading.png" alt="splash image of docker hub deluan navidrome." />
+                    <h2>Instructions</h2>
+                    
+                    <h3>Configure a persistent USB connection</h3>
+                    <p>Since I’m using a headless Debian Bookworm setup, I need to properly configure the USB drive so that it automounts and is accessible after every reboot. I’ve already created an <a href="./project-4.html">instructions</a> that work pretty well for me.</p>
+                    
+                    <h3>Unistall conflicting Docker packages</h3>
+                    <p>Start by uninstalling all previous versions or conflicting versions of Docker. The docker website suggests doing this as some Linux distros come with some packager installed:</p>
+                    <p><code>for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done</code></p>
+                    <p>If you want to start with a clean install base, then follow the process described on the Docker website <a href=" https://docs.docker.com/engine/install/raspberry-pi-os/#uninstall-docker-engine">here</a>.</p>
+
+                    <h3>Install Docker on the RPi</h3>
+                    <p>There’s a lot of documentation on the web, including the Docker website <a href="https://docs.docker.com/engine/install/raspberry-pi-os/#install-using-the-repository">here</a>, on how to install Docker on a Raspberry Pi, but I still had trouble completing the installation, as the latest and greatest version had my older RPI-3 deprecated.</p> 
+                    <p>As I searched for older versions to install, I ran into <a href="https://forums.raspberrypi.com/viewtopic.php?t=320769">this</a> page, which met my needs. It’s also much simpler.</p>
+                    <p><code>> sudo apt-get update</code></p>
+                    <p><code>> sudo apt install docker.io</code></p>
+                    <p>The above command installs a Docker package that is maintained by Debian/Ubuntu/Raspberry PI OS repositories that has better compatibility with older ARM architectures. Functionally, this should meet my needs with Navidrome.</p>
+                    <p>After the RPi settled down, I typed the following to see if the docker service was running:</p>
+                    <p><code>> sudo systemctl docker status</code></p>
+                    <p>And the RPi replied that docker was <code>active (running)</code>. Then I typed:</p>
+                    <p><code>> sudo docker run hello-world</code></p>
+                    <p>to which, the RPi returned the anticipated message that:</p>
+                    <p><code>This message shows that your installation appears to be working correctly.</code></p>
+                    <p>Then I checked the version of the installed package with:</p>
+                    <p><code>> docker version</code></p>
+                    <p>and the system told me that I had version <code>20.10.24+dfsgl</code></p>
+                    <img src="/resources/media/dockerversion.png" alt="image of command screen showing docker version">
+                    <p>Success!</p>
+                    
+                    <h3>Create directory structure for Navidrome</h3>
+                    <p>Create a directory for the Navidrome Setup:</p>
+                    <p><code>> mkdir -p ~/docker/navidrome</code></p>
+                    <p>Navigate to the directory with:</p>
+                    <p><code>> cd ~/docker/navidrome</code></p>
+                    <p>and create one more directory for persistent data:</p>
+                    <p><code>> mkdir -p data</code></p>
+
+                    <h3>Install Docker Compose</h3>
+                    <p>docker-compose is a tool used to define and manage multi-container Docker applications using a simple YAML file (docker-compose.yml). It lets you configure all your containers, networks, and volumes in one place, and start them all with a single command.</p>
+                    <p>Check if Docker Compose is installed:</p>
+                    <p><code>docker-compose --version</code></p>
+                    <p>If it's not installed, the following message appears:</p>
+                    <p><code>> -bash: docker-compose: command not found</code></p>
+                    <p>I went ahead and installed it with the following command:</p>
+                    <p><code>sudo apt install -y docker-compose</code></p>
+                    <p>and checked the install version again, and saw the following message:</p>
+                    <p><code>> docker-compose version 1.29.2, build unknown</code></p>
+
+                    <h3>Create docker-compose.yml file</h3>
+                    <p>I created the docker compose file with:</p>
+                    <p><code>nano docker-compose.yml</code></p>
+                    <br>
+<pre>
+version: '2'
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    restart: unless-stopped
+    ports:
+      - "4533:4533"  # Port for Navidrome (won't conflict with WordPress)
+    environment:
+      - ND_SCANSCHEDULE=1h
+      - ND_LOGLEVEL=info
+    volumes:
+      - ~/docker/navidrome/data:/data
+      - /path/to/your/music:/music:ro
+</pre>
+                    <p>Before we continue, a quick note: Why Version 2:</p>
+                    <p>The version field specifies which version of the Docker Compose file format that I'm using.</p>
+                    <p>In this case, with the Raspberry Pi 3 running Docker through docker.io, version: '2' is a good choice because:</p>
+                    <ul>
+                        <li>It's widely compatible with older Docker installations</li>
+                        <li>It provides all the features you need for Navidrome</li>
+                        <li>It's less resource-intensive than version 3, which is optimized for swarm deployments</li>
+                    </ul>
+                    
+                    <h3>Start Navidrome</h3>
+                    <p>I made sure that in the same Navidrome directory that I just created: <code>~/docker/navidrome</code></p>
+                    <p>Then I started the container using the following command:</p>
+                    <p><code>> docker-compose up -d</code></p>
+                    <p>If things go as planned, then the script will download the Navidrome image and create and start the container.</p>
+                    <p><code>> Creating network “navidrome default” with the default driver</code></p>
+                    <p><code>> Pulling navidrome (deluan/navidrome:latest)...</code></p>
+                    <p><code>> latest: Pulling from deluan/navidrome</code></p>
+                    <p>When complete, verify that the container is running, with:</p>
+                    <p><code>> docker ps</code></p>
+                    <p>The response should be a table with headings and information for <code>CONTAINER ID</code>, <code>IMAGE</code>, etc.</p>
+                    <p>You can also view the logs with:</p>
+                    <p><code>> docker logs navidrome</code></p>
+                    <p>which will pour a ton of stuff on the screen starting with an ASCII image that says "NAVIDROME"</p>
+
+                    <h3>Access Navidrome</h3>
+                    <p>Use your favourite web browser to navigate to Navidrome. Include the port number in the URL:</p>
+                    <p><code>http://your-rpi-ip:4533</code></p>
+                </article>
+                <article>
+                    <h2>Some Debugs</h2>
+                    <h3>Debugging Docker Compose installation</h3>
+                    <p>The first time I ran docker-compose, I received a traceback that ended with an error saying:</p>
+                    <p><code>docker.errors.DockerException: Error while fetching server API version: </code></p>
+                    <p>Here's how I debugged the issue with some help from Claude:</p>
+                    <p>Check if docker is running with:</p>
+                    <p><code>sudo systemctl status docker</code></p>
+                    <p>The response was that Docker was <code>active (running)</code></p>
+                    <p>I checked the Docker version.</p>
+                    <p>Checked Docker socket permissions with:</p>
+                    <p><code>> ls -l /var/run/docker/sock</code></p>
+                    <p>And the answer was:</p>
+                    <p><code>srw-rw---- 1 root docker 0 May 14 13:11 /var/run/docker.sock</code></p>
+                    <p>I added my user to the Docker group with:</p>
+                    <p><code>sudo usermode -aG docker $USER</code></p>
+                    <p>And rebppted the RPi to apply the changes. After it came back up, I confirmed that the Docker Compose install was good by checking the version. And Docker Compose was ready for use.</p>
+                </article>
+                <article>
+                    <h2>Updating Navidrome in Docker</h2>
+                    <p>Updating Navidrome in Docker is an easy process. first, Navigate to the Navidrome Directory at <code>~/docker/navidrome</code> and then pull the latest image with:</p>
+                    <p><code>> docker-compose pull</code></p>
+                    <p>Restart with the image:</p>
+                    <p><code>docker-compose up -d</code></p>
+                    <p>Verify the update by first checking if the container is running:</p>
+                    <p><code>docker ps</code></p>
+                    <p>And then check the Navidrome version:</p>
+                    <p><code>docker logs navidrome | grep version</code></p>
+                </article>
+                <article>
+                    <h2>References</h2>
+                    <p><a href="https://hub.docker.com/r/deluan/navidrome">Deluan Navidrome on Docker Hub</a></p>
+                </article>
+            </section>
+        </main>
+
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
+
+        <!-- Script to insert menu/navbar content for this page -->
+        <script>insertContentById('/menu.html', 'navbar');</script>
+
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
+
+        <!-- Script for the hamburger menu -->
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
