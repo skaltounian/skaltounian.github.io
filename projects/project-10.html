@@ -32,6 +32,15 @@
                 <h1>Install Navidrome Using Docker Container</h1>
                 <article class="Intro">
                     <h2>Introduction</h2>
+                    <p>Containers are lightweight, standalone, executable software packages that include everything needed to run an application:</p>
+                    <ul>
+                        <li>Code</li>
+                        <li>Runtime</li>
+                        <li>System tools</li>
+                        <li>System libraries</li>
+                        <li>Settings</li>
+                    </ul>
+                    <p>Unlike virtual machines that include entire operating systems, containers share the host system's OS kernel but run in isolated spaces.</p>
                     <p>I created this project to free up one of my Raspberry Pis by installing the Navidrome music server on the RPi where I host another one of my projects. Plus, I needed some way of exercising with Docker and using containers.</p>
                 </article>
             </section>
@@ -50,10 +59,10 @@
 
                     <h3>Install Docker on the RPi</h3>
                     <p>There’s a lot of documentation on the web, including the Docker website <a href="https://docs.docker.com/engine/install/raspberry-pi-os/#install-using-the-repository">here</a>, on how to install Docker on a Raspberry Pi, but I still had trouble completing the installation, as the latest and greatest version had my older RPI-3 deprecated.</p> 
-                    <p>As I searched for older versions to install, I ran into <a href="https://forums.raspberrypi.com/viewtopic.php?t=320769">this</a> page, which met my needs. It’s also much simpler.</p>
+                    <p>As I searched for older versions to install, I ran into <a href="https://forums.raspberrypi.com/viewtopic.php?t=320769">this page</a>, which met my needs. It’s also much simpler.</p>
                     <p><code>> sudo apt-get update</code></p>
                     <p><code>> sudo apt install docker.io</code></p>
-                    <p>The above command installs a Docker package that is maintained by Debian/Ubuntu/Raspberry PI OS repositories that has better compatibility with older ARM architectures. Functionally, this should meet my needs with Navidrome.</p>
+                    <p>The command installs a Docker package that's maintained by Debian/Ubuntu/Raspberry PI OS repositories that has better compatibility with older ARM architectures. Functionally, this should meet my needs with Navidrome.</p>
                     <p>After the RPi settled down, I typed the following to see if the docker service was running:</p>
                     <p><code>> sudo systemctl docker status</code></p>
                     <p>And the RPi replied that docker was <code>active (running)</code>. Then I typed:</p>
@@ -88,7 +97,7 @@
                     <h3>Create docker-compose.yml file</h3>
                     <p>I created the docker compose file with:</p>
                     <p><code>nano docker-compose.yml</code></p>
-                    <br>
+
 <pre>
 version: '2'
 services:
@@ -134,7 +143,7 @@ services:
                     <p><code>http://your-rpi-ip:4533</code></p>
                 </article>
                 <article>
-                    <h2>Some Debugs</h2>
+                    <h2>Useful Information</h2>
                     <h3>Debugging Docker Compose installation</h3>
                     <p>The first time I ran docker-compose, I received a traceback that ended with an error saying:</p>
                     <p><code>docker.errors.DockerException: Error while fetching server API version: </code></p>
@@ -152,8 +161,8 @@ services:
                     <p>And rebppted the RPi to apply the changes. After it came back up, I confirmed that the Docker Compose install was good by checking the version. And Docker Compose was ready for use.</p>
                 </article>
                 <article>
-                    <h2>Updating Navidrome in Docker</h2>
-                    <p>Updating Navidrome in Docker is an easy process. first, Navigate to the Navidrome Directory at <code>~/docker/navidrome</code> and then pull the latest image with:</p>
+                    <h3>Updating Navidrome in Docker</h3>
+                    <p>Updating Navidrome in Docker is an easy process. First, Navigate to the Navidrome directory at <code>~/docker/navidrome</code> and then pull the latest image with:</p>
                     <p><code>> docker-compose pull</code></p>
                     <p>Restart with the image:</p>
                     <p><code>docker-compose up -d</code></p>
@@ -161,6 +170,26 @@ services:
                     <p><code>docker ps</code></p>
                     <p>And then check the Navidrome version:</p>
                     <p><code>docker logs navidrome | grep version</code></p>
+                </article>
+                <article>
+                    <h3>Application build process</h3>
+                    <p>While not directly visible to me, the consumer, containerized applications like Navidrome are created through:</p>
+                    <ol>
+                        <li>GitHub: The Navidrome source code is hosted on GitHub.</li>
+                        <li>CI/CD pipeline: Automated build processes compile the software.</li>
+                        <li>Docker Registry: The compiled software is packaged into the container image.</li>
+                        <li>Docker Hub: The image is published to Docker Hub for public download.</li>
+                    </ol>
+                </article>
+                <article>
+                    <h3>What is Docker</h3>
+                    <p>Docker is a tool that is used to automate the deployment of applications in lightweight containers so that applications can work efficiently in different environments in isolation.:</p>
+                    <ul>
+                        <li>Docker Engine: The runtime that allows containers to be built and run.</li>
+                        <li>Docker Hub: A repo for sharing and accessing container images.</li>
+                        <li>Dockerfile: A script containing instructions to build a Docker image.</li>
+                        <li>Docker Compose: A tool for defining and running multi-container applications</li>
+                    </ul>
                 </article>
                 <article>
                     <h2>References</h2>
