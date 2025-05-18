@@ -86,17 +86,17 @@
                     <h3>Install Docker Compose</h3>
                     <p>docker-compose is a tool used to define and manage multi-container Docker applications using a simple YAML file (docker-compose.yml). It lets you configure all your containers, networks, and volumes in one place, and start them all with a single command.</p>
                     <p>Check if Docker Compose is installed:</p>
-                    <p><code>docker-compose --version</code></p>
+                    <p><code>> docker-compose --version</code></p>
                     <p>If it's not installed, the following message appears:</p>
                     <p><code>> -bash: docker-compose: command not found</code></p>
                     <p>I went ahead and installed it with the following command:</p>
-                    <p><code>sudo apt install -y docker-compose</code></p>
+                    <p><code>> sudo apt install -y docker-compose</code></p>
                     <p>and checked the install version again, and saw the following message:</p>
                     <p><code>> docker-compose version 1.29.2, build unknown</code></p>
 
                     <h3>Create docker-compose.yml file</h3>
                     <p>I created the docker compose file with:</p>
-                    <p><code>nano docker-compose.yml</code></p>
+                    <p><code>> nano docker-compose.yml</code></p>
 
 <pre>
 version: '2'
@@ -149,7 +149,7 @@ services:
                     <p><code>docker.errors.DockerException: Error while fetching server API version: </code></p>
                     <p>Here's how I debugged the issue with some help from Claude:</p>
                     <p>Check if docker is running with:</p>
-                    <p><code>sudo systemctl status docker</code></p>
+                    <p><code>> sudo systemctl status docker</code></p>
                     <p>The response was that Docker was <code>active (running)</code></p>
                     <p>I checked the Docker version.</p>
                     <p>Checked Docker socket permissions with:</p>
@@ -165,11 +165,11 @@ services:
                     <p>Updating Navidrome in Docker is an easy process. First, Navigate to the Navidrome directory at <code>~/docker/navidrome</code> and then pull the latest image with:</p>
                     <p><code>> docker-compose pull</code></p>
                     <p>Restart with the image:</p>
-                    <p><code>docker-compose up -d</code></p>
+                    <p><code>> docker-compose up -d</code></p>
                     <p>Verify the update by first checking if the container is running:</p>
                     <p><code>docker ps</code></p>
                     <p>And then check the Navidrome version:</p>
-                    <p><code>docker logs navidrome | grep version</code></p>
+                    <p><code>> docker logs navidrome | grep version</code></p>
                 </article>
                 <article>
                     <h3>Application build process</h3>
