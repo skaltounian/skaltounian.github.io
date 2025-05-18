@@ -28,7 +28,8 @@ body {
 }
 
 /* 2. Typography Styles =========================== */
-code {
+code,
+pre {
     font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
 }
