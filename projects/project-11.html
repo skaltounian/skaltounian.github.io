@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I integrated IMU-6050 into an Arduino Uno. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>MPU-6050 / Arduino</title>
+        <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script type="text/javascript" src="/resources/jscripts/scripts.js"></script>
+    </head>
+    <body>
+        <header>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
+
+            <!-- Breadcrumb links -->
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projects/projects.html">Geekout</a></li>
+                    <li>MPU-6050 with Arduino Uno</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="introduction">
+                <h1>MPU-6050 Fundamentals with Arduino</h1>
+                <article class="Intro">
+                    <h2>Basic IMU Setup and Raw Data Acquisition</h2>
+                    <h3>Learning Objectives</h3>
+                    <img src="/resources/media/arduino-mpu-basic.jpg" alt="image of arduino wired with mpu6040">
+                    <ul>
+                        <li>Understand IMU fundamentals</li>
+                        <li>Understand I2C/SPI communication protocols</li>
+                        <li>Learn coordinate systems and sensor fusion basics</li>
+                    </ul>
+                </article>
+            </section>
+            <section class="setup">
+                <article>
+                    <h3>Hardware Requirements</h3>
+                    <ul>
+                        <li>Arduino Uno</li>
+                        <li>IMU Sensor MPU-6050</li>
+                        <li>Jumper wires</li>
+                        <li>Power supply</li>
+                    </ul>
+
+                    <h3>Wiring Connections</h3>
+                    <pre>
+MPU-6050     Arduino Uno
+-------------------------
+ VCC   ---   3.3V (recommended) or 5V
+ GND   ---   GND
+ SCL   ---   A5 (SCL)
+ SDA   ---   A4 (SDA)
+ XDA   ---   (Leave unconnected for now)
+ XCL   ---   (Leave unconnected for now)
+ AD0   ---   GND (sets I2C address to 0x68)
+ INT   ---   Digital Pin 2 (optional, for interrupts)
+                    </pre>
+                    <h3>Basic Connection Test</h3>
+                    <p>Create the following sketch for the Arduino Uno to perform basic connection test to the MPU-6050:</p>
+                    <pre><code>
+#include &lt;Wire.h&gt;
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();  
+  Serial.println("Scanning for I2C devices...");
+
+  // Check if MPU-6050 responds at address 0x68
+  Wire.beginTransmission(0x68);
+  if (Wire.endTransmission() == 0) {
+    Serial.println("MPU-6050 found at address 0x68!");
+  } else {
+    Serial.println("MPU-6050 not found. Check wiring.");
+  }
+}
+
+void loop() {
+  // Empty for now
+}
+
+                    </code></pre>
+                </article>
+                <article>
+                    <h3>What is Wire.h</h3>
+                    <p>Wire.h is the Arduino library that handles I2C communication protocol. I2C is a serial communication method that allows multiple devices to communicate using just two wires:</p>
+                    <ul>
+                        <li>SDA (Serial Data) - carries the actual data</li>
+                        <li>SCL (Serial Clock) - provides timing synchronization</li>
+                    </ul>
+
+                    <p>The MPU-6050 IMU communicates with the Arduino using I2C protocol. Instead of having separate wires for each sensor reading, I2C lets us:</p>
+                    <ul>
+                        <li>Use only 2 data wires (plus power/ground)</li>
+                        <li>Address the IMU with a specific ID (0x68)</li>
+                        <li>Read/write to specific registers inside the IMU chip</li>
+                    </ul>
+                </article>
+            </section>
+         </main>
+
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
+
+        <!-- Script to insert menu/navbar content for this page -->
+        <script>insertContentById('/menu.html', 'navbar');</script>
+
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
+
+        <!-- Script for the hamburger menu -->
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
