@@ -175,8 +175,116 @@ void loop() {
  
   delay(100);
 }
-
                     </code></pre>
+                    <h3>Learning Activities</h3>
+                    <ul>
+                        <li>Upload code and observe raw values in Serial Monitor</li>
+                        <li>Tilt the IMU and watch accelerometer values change</li>
+                        <li>Rotate the IMU and observe gyroscope values</li>
+                        <li>Note that values are in raw ADC counts, not physical units yet</li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2>Converting Raw Data to Physical Units</h2>
+                    <h3>Accelerometer Scaling</h3>
+                    <p>At the default ±2g range:</p>
+                    <ul>
+                        <li>LSB Sensitivity = 16,384 LSB/g</li>
+                        <li>Formula: acceleration_g = raw_value / 16384.0</li>
+                    </ul>
+                    <h3>Gyroscope Scaling</h3>
+                    <p>At the dafault ±250°/s range:</p>
+                    <ul>
+                        <li>LSB Sensitivity: 131 LSB/(°/s)</li>
+                        <li>Formula: angular_velocity_dps = raw_value / 131.0</li>
+                    </ul>
+                    <h3>Code With Unit Conversion</h3>
+                    <pre><code>
+#include &lt;Wire.h&gt;
+
+const int MPU_addr = 0x68;  // this is the address of the MPU
+int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
+
+// scaling factors
+const float accel_scale = 16384.0;  // LSB/g for ±2g range
+const float gyro_scale = 131.0;     // LSB/(°/s) for ±250°/s range
+
+void setup() {
+
+  // initialize the Arduino as I2C Master
+  Wire.begin();
+
+  // Start conversation with IMU at the defined address
+  Wire.beginTransmission(MPU_addr);  
+  Wire.write(0x6B);  // PWR_MGMT_1 register
+  Wire.write(0);     // Wake up the MPU-6050
+  Wire.endTransmission(true);
+
+  // setup the Arduino serial port and print two headers
+  Serial.begin(9600);
+  Serial.println("Raw IMU Data Reader");
+  Serial.println("AcX,AcY,AcZ,GyX,GyY,GyZ");
+}
+void loop() {
+  readIMU();
+  // Convert to physical units
+  float ax = AcX / accel_scale;
+  float ay = AcY / accel_scale;
+  float az = AcZ / accel_scale;
+
+  float gx = GyX / gyro_scale;
+  float gy = GyY / gyro_scale;
+  float gz = GyZ / gyro_scale;
+
+  // Display data
+  Serial.print("A: ");
+  Serial.print(ax, 3); Serial.print(",");
+  Serial.print(ay, 3); Serial.print(",");
+  Serial.print(az, 3);
+  Serial.print(" | G: ");
+  Serial.print(gx, 2); Serial.print(",");
+  Serial.print(gy, 2); Serial.print(",");
+  Serial.println(gz, 2);
+
+  delay(100);  // value in msec
+}
+
+void readIMU() {
+  Wire.beginTransmission(MPU_addr);
+  Wire.write(0x3B);  // Starting register for accelerometer
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU_addr, 14, true);
+
+
+  // Read accelerometer data
+  /* read the high byte,
+     shift left,
+     then read the low byte,
+     and combine the two with OR operation
+  */
+  AcX = Wire.read() &lt;&lt; 8 | Wire.read();
+  AcY = Wire.read() &lt;&lt; 8 | Wire.read();
+  AcZ = Wire.read() &lt;&lt; 8 | Wire.read();
+
+
+  // Skip temperature for now
+  Tmp = Wire.read() &lt;&lt; 8 | Wire.read();
+
+
+  // Read gyroscope data
+  GyX = Wire.read() &lt;&lt; 8 | Wire.read();
+  GyY = Wire.read() &lt;&lt; 8 | Wire.read();
+  GyZ = Wire.read() &lt;&lt; 8 | Wire.read();
+}
+                    </code></pre>
+                    <h3>Hands-On Experiments</h3>
+                    <ul>
+                        <li>Gravity Test: Place IMU flat - one axis should read ~1g, others ~0g</li>
+                        <li>Rotation Test: Slowly rotate IMU - gyroscope should show angular velocity</li>
+                        <li>Coordinate System: Determine which axis is which using systematic tilting</li>
+                    </ul>
                 </article>
             </section>
          </main>
