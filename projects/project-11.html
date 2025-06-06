@@ -227,6 +227,7 @@ void setup() {
   Serial.println("Raw IMU Data Reader");
   Serial.println("AcX,AcY,AcZ,GyX,GyY,GyZ");
 }
+
 void loop() {
   readIMU();
   // Convert to physical units
@@ -257,7 +258,6 @@ void readIMU() {
   Wire.endTransmission(false);
   Wire.requestFrom(MPU_addr, 14, true);
 
-
   // Read accelerometer data
   /* read the high byte,
      shift left,
@@ -268,10 +268,8 @@ void readIMU() {
   AcY = Wire.read() &lt;&lt; 8 | Wire.read();
   AcZ = Wire.read() &lt;&lt; 8 | Wire.read();
 
-
   // Skip temperature for now
   Tmp = Wire.read() &lt;&lt; 8 | Wire.read();
-
 
   // Read gyroscope data
   GyX = Wire.read() &lt;&lt; 8 | Wire.read();
