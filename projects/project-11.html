@@ -66,8 +66,7 @@ MPU-6050     Arduino Uno
                     </pre>
                     <h3>Basic Connection Test</h3>
                     <p>Create the following sketch for the Arduino Uno to perform basic connection test to the MPU-6050:</p>
-                    <pre><code>
-#include &lt;Wire.h&gt;
+                    <pre><code>#include &lt;Wire.h&gt;
 
 void setup() {
   Serial.begin(9600);
@@ -85,8 +84,7 @@ void setup() {
 
 void loop() {
   // Empty for now
-}
-                    </code></pre>
+}</code></pre>
                 </article>
                 <article>
                     <h3>What is Wire.h</h3>
@@ -117,8 +115,7 @@ void loop() {
                         <li>0x1B: Gyroscope configuration</li>
                     </ul>
                     <h3>Reading Raw Data</h3>
-                    <pre><code>
-#include &lt;Wire.h&gt;
+                    <pre><code>#include &lt;Wire.h&gt;
 
 const int MPU_addr = 0x68;  // this is the address of the MPU
 int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
@@ -164,7 +161,6 @@ void loop() {
   GyY = Wire.read() &lt;&lt; 8 | Wire.read();
   GyZ = Wire.read() &lt;&lt; 8 | Wire.read();
 
-
   // print each value to serial port
   Serial.print(AcX); Serial.print(",");
   Serial.print(AcY); Serial.print(",");
@@ -174,8 +170,20 @@ void loop() {
   Serial.println(GyZ);  
  
   delay(100);
-}
-                    </code></pre>
+}</code></pre>
+                    <h3>Output Data</h3>
+                    <p>The data from the above code would look something like this:</p>
+                    <pre><code>AcX,AcY,AcZ,GyX,GyY,GyZ
+468,-48,13088,-131,-29,-34
+512,-56,13032,-108,-54,-34
+548,-144,13072,-106,-37,-25
+572,-100,13056,-112,-23,-43
+444,-148,13000,-112,-33,-39
+624,-64,12980,-112,-32,-27
+496,-48,13016,-90,-29,-47
+600,-112,13116,-103,-34,-30
+488,-104,13076,-105,-26,-22</code></pre>
+
                     <h3>Learning Activities</h3>
                     <ul>
                         <li>Upload code and observe raw values in Serial Monitor</li>
@@ -201,8 +209,7 @@ void loop() {
                         <li>Formula: angular_velocity_dps = raw_value / 131.0</li>
                     </ul>
                     <h3>Code With Unit Conversion</h3>
-                    <pre><code>
-#include &lt;Wire.h&gt;
+                    <pre><code>#include &lt;Wire.h&gt;
 
 const int MPU_addr = 0x68;  // this is the address of the MPU
 int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
@@ -275,8 +282,18 @@ void readIMU() {
   GyX = Wire.read() &lt;&lt; 8 | Wire.read();
   GyY = Wire.read() &lt;&lt; 8 | Wire.read();
   GyZ = Wire.read() &lt;&lt; 8 | Wire.read();
-}
-                    </code></pre>
+}</code></pre>
+                    <h3>Output Data</h3>
+                    <p>The output data would look something like the following:</p>
+                    <pre><code>Raw IMU Data Reader
+AcX,AcY,AcZ,GyX,GyY,GyZ
+A: 0.007,0.012,0.800 | G: -0.75,-0.40,-0.16
+A: 0.016,0.010,0.805 | G: -0.89,-0.32,-0.15
+A: 0.010,0.017,0.798 | G: -0.82,-0.08,-0.26
+A: 0.000,0.017,0.790 | G: -0.66,-0.21,-0.16
+A: 0.010,0.015,0.790 | G: -0.77,-0.52,-0.22
+A: 0.014,0.010,0.797 | G: -0.82,-0.28,-0.16
+A: -0.002,0.010,0.800 | G: -0.80,-0.27,-0.15</code></pre>
                     <h3>Hands-On Experiments</h3>
                     <ul>
                         <li>Gravity Test: Place IMU flat - one axis should read ~1g, others ~0g</li>
