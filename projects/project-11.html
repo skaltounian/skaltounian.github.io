@@ -231,8 +231,8 @@ void setup() {
 
   // setup the Arduino serial port and print two headers
   Serial.begin(9600);
-  Serial.println("Raw IMU Data Reader");
-  Serial.println("AcX,AcY,AcZ,GyX,GyY,GyZ");
+  Serial.println("IMU Data with Physical Units");
+  Serial.println("Accel(g): X,Y,Z | Gyro(°/s): X,Y,Z");
 }
 
 void loop() {
@@ -302,6 +302,81 @@ A: -0.002,0.010,0.800 | G: -0.80,-0.27,-0.15</code></pre>
                     </ul>
                 </article>
             </section>
+            <section>
+                <article>
+                    <h2>Data Comparisons Around X-Y-Z Axes</h2>
+                    <p>The IMU on the breadboard is lying as flat as possible, and where:</p>
+                    <ul>
+                        <li>X-axis is to the right</li>
+                        <li>Y-axis is to the north</li>
+                        <li>Z-axis is orthogonal to the plane of the table</li>
+                    </ul>
+                    <p>The data is not filtered. I'm presenting four lines of printout on the Arduino Serial Monitor.</p>
+                    <h3>Data observations at 0°</h3>
+                    <pre><code>IMU Data with Physical Units
+Accel(g): X,Y,Z | Gyro(°/s): X,Y,Z
+A: 0.021,0.013,0.789 | G: -0.66,-0.32,-0.17
+A: 0.012,0.015,0.794 | G: -0.68,-0.47,-0.32
+A: 0.013,0.010,0.789 | G: -0.50,-0.28,-0.27
+A: 0.015,0.012,0.799 | G: -0.44,-0.27,-0.28</code></pre>
+                    <h3>Data observations at +30° along the Y-Axis</h3>
+                    <pre><code>IMU Data with Physical Units
+Accel(g): X,Y,Z | Gyro(°/s): X,Y,Z
+A: 0.689,0.001,0.556 | G: -0.59,-0.28,-0.14
+A: 0.688,0.003,0.557 | G: -0.60,-0.50,-0.31
+A: 0.688,0.007,0.551 | G: -0.76,-0.42,-0.24
+A: 0.691,-0.004,0.563 | G: -0.72,-0.46,-0.21</code></pre>
+                    <h3>Data observations at +30° along the X-Axis</h3>
+                    <pre><code>IMU Data with Physical Units
+Accel(g): X,Y,Z | Gyro(°/s): X,Y,Z
+A: 0.095,0.526,0.633 | G: -0.62,-0.40,-0.28
+A: 0.095,0.521,0.634 | G: -0.76,-0.44,-0.08
+A: 0.102,0.526,0.642 | G: -0.77,-0.40,-0.24
+A: 0.097,0.526,0.641 | G: -0.59,-0.50,-0.31</code></pre>
+                    <h3>Data observations at +30° along the X-Axis</h3>
+                    <pre><code>IMU Data with Physical Units
+Accel(g): X,Y,Z | Gyro(°/s): X,Y,Z
+A: -0.813,0.535,-0.256 | G: -0.50,-0.06,-0.21
+A: -0.813,0.539,-0.259 | G: -0.51,0.29,-0.22
+A: -0.806,0.538,-0.264 | G: -0.79,-0.28,0.08
+A: -0.813,0.531,-0.265 | G: -0.84,-0.37,-0.11</code></pre>
+                </article>
+                <article>
+                    <h2>Data Comparisons for Varying Angles Around the Y-Axis</h2>
+                    <h3>Data observations at 0°</h3>
+                    <pre><code>A: 0.043,0.011,0.794 | G: -0.66,-0.15,-0.28
+A: 0.045,0.013,0.791 | G: -0.54,-0.41,-0.27
+A: 0.045,0.016,0.792 | G: -0.59,-0.40,-0.50
+A: 0.044,0.008,0.784 | G: -0.80,-0.30,-0.23</code></pre>
+                    <h3>Data observations at ~10°</h3>
+                    <pre><code>A: 0.244,0.009,0.783 | G: -0.76,-0.42,-0.18
+A: 0.240,0.001,0.774 | G: -0.52,-0.51,-0.13
+A: 0.236,0.009,0.771 | G: -0.78,-0.34,-0.34
+A: 0.247,0.004,0.773 | G: -0.53,-0.48,-0.34</code></pre>
+                    <h3>Data observations at ~30°</h3>
+                    <pre><code>A: 0.532,-0.007,0.660 | G: -0.58,-0.41,-0.34
+A: 0.530,-0.005,0.659 | G: -0.63,-0.30,-0.22
+A: 0.533,-0.011,0.656 | G: -0.64,-0.28,-0.24
+A: 0.522,-0.007,0.661 | G: -0.66,-0.54,-0.27</code></pre>
+                    <h3>Data observations at ~30°</h3>
+                    <pre><code>A: 0.803,-0.003,0.449 | G: -0.66,-0.44,-0.15
+A: 0.805,-0.001,0.443 | G: -0.50,-0.46,-0.02
+A: 0.809,-0.007,0.439 | G: -0.57,-0.31,-0.33
+A: 0.804,-0.005,0.441 | G: -0.53,-0.34,-0.34</code></pre>
+                </article>
+                <article>
+                    <h2>Plotting the Variations</h2>
+                    <p>I made some changes to the Arduino code to be able to plot the data.</p>
+                    <p>Again, the data presented here is not filtered, although I used the interpolate feature for the Gyroscope plot.</p>
+                    <h3>Accelerometer Plot for X-Axis</h3>
+                    <img src="/resources/media/ardunio-mpu-acc-x-rotation.png" style="width: 400px;" alt="plot for accelerometer data during x-axis rotation.">
+                    <h3>Accelerometer Plot for X-Axis</h3>
+                    <img src="/resources/media/ardunio-mpu-gyr-x-rotation.png" style="width: 400px;" alt="plot for gyroscope data during x-axis rotation.">
+
+                </article>
+
+            </section>
+
          </main>
 
         <!-- Footer content is fetched from external file = footer.html -->
