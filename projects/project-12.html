@@ -33,13 +33,13 @@
                 <article>
                     <h2>Introduction</h2>
                     <p>In this project, I learn about sensor noise and fitering of data extracted from MPU6050.</p>
-                    <p>In a way, this project is a continuation of an earlier one where I <a href="/projects/project-11.html">integrated an MPU6050 with an Arduino Uno</a>.</p>
+                    <p>In a way, this project is a continuation of an earlier one where I <a href="/projects/project-11.html" title="MPU6050 Fundamental with Arduino">integrated an MPU6050 with an Arduino Uno</a>.</p>
                 </article>
             </section>
             <section class="gimbal">
                 <article>
                     <h2>The Gimbal</h2>
-                    <p>The experiment deserved a better gimbal for measuring the results of the experiment. Here’s a picture of the second version, which provides 3-degrees of freedom.</p>
+                    <p>The experiment deserved a better gimbal for measuring the results of the experiment. Here's a picture of the second version, which provides 3-degrees of freedom.</p>
                     <img src="/resources/media/gimbal-version-2.jpg" style="width: 400px;" alt="picture of gimbal version 2">
                 </article>
             </section>
@@ -47,7 +47,7 @@
                 <h2>Understanding Sensor Noise</h2>
                 <article>
                     <h3>Description</h3>
-                    <p>The code that I wrote for the <a href="/projects/project-11.html" title="MPU6-5- Fundamental with Arduino">previous project</a> gathered accelerometer and gyroscope data at the X-Y-Z axes.</p>
+                    <p>The code that I wrote for the <a href="/projects/project-11.html" title="MPU6050 Fundamental with Arduino">previous project</a> gathered accelerometer and gyroscope data at the X-Y-Z axes.</p>
                     <p>In this project, I'm adding the capability to measure total amplitude of the data (instead of X-Y-Z axes), plus the standard deviation.</p>
                     <p>I then create a simple data logger to understand noise characteristics.</p>
                     <p>The loop in the Arduino code performs the following operations:</p>
@@ -269,11 +269,11 @@ Serial.print(std_gmag);  Serial.print(", ");
 Serial.println(acc_err);</code></pre>
 
 <p>Plot of the accelerometer data:</p>
-<img src="/resources/media/mpu-acc-x-var.png" alt="plot of accelerometer data">
+<img src="/resources/media/mpu-acc-x-var.png" style="width: 400px;" alt="plot of accelerometer data">
 <p>Plot of the gyroscope data:</p>
-<img src="/resources/media/mpu-gyr-x-var.png" alt="plot of the gyroscope data">
+<img src="/resources/media/mpu-gyr-x-var.png" style="width: 400px;" alt="plot of the gyroscope data">
 <p>Plot of error in measuring gravity:</p>
-<img src="/resources/media/mpu-gerr-x-var.png" alt="plot of gravity measurements">
+<img src="/resources/media/mpu-gerr-x-var.png" style="width: 400px;" alt="plot of gravity measurements">
 
 <p>The plots confirm, as the printed observations, that:</p>
 <ul>
@@ -292,6 +292,7 @@ Serial.println(acc_err);</code></pre>
                     <ul>
                         <li><a href="https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf">MPU-6000 and MPU-6050 Product Specification Revision 3.4</a></li>
                         <li><a href="https://epictecs.wordpress.com/2018/05/28/how-to-interface-arduino-and-the-mpu6050-sensor/">How to Interface Arduino and the MPU6050 Sensor</a></li>
+                        <li><a href="/projects/project-11.html" title="MPU6050 Fundamental with Arduino">MPU6050 Fundamentals with Arduino</a></li>
                     </ul>
                 </article>
             </section>
