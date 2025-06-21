@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I studied noise and filtering with the MPU-6050. -->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>MPU-6050 Noise Filtering</title>
+        <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script type="text/javascript" src="/resources/jscripts/scripts.js"></script>
+    </head>
+    <body>
+        <header>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
+
+            <!-- Breadcrumb links -->
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projects/projects.html">Geekout</a></li>
+                    <li>MPU-6050 Noise Filtering</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <section class="introduction">
+            </section>
+            <section class="gimbal">
+            </section>
+            <section class="data noise">
+            </section>
+            <section class="data filtering">
+            </section>
+            <section>
+                <article>
+                    <h2>References</h2>
+                    <ul>
+                        <li><a href="https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf">MPU-6000 and MPU-6050 Product Specification Revision 3.4</a></li>
+                        <li><a href="https://epictecs.wordpress.com/2018/05/28/how-to-interface-arduino-and-the-mpu6050-sensor/">How to Interface Arduino and the MPU6050 Sensor</a></li>
+                    </ul>
+                </article>
+            </section>
+         </main>
+
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
+
+        <!-- Script to insert menu/navbar content for this page -->
+        <script>insertContentById('/menu.html', 'navbar');</script>
+
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
+
+        <!-- Script for the hamburger menu -->
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
