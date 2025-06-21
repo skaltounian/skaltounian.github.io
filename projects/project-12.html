@@ -28,11 +28,261 @@
 
         </header>
         <main>
+            <h1>Understanding Sensor Noise and Data Filtering</h1>
             <section class="introduction">
+                <article>
+                    <h2>Introduction</h2>
+                    <p>In this project, I learn about sensor noise and fitering of data extracted from MPU6050.</p>
+                    <p>In a way, this project is a continuation of an earlier one where I <a href="/projects/project-11.html">integrated an MPU6050 with an Arduino Uno</a>.</p>
+                </article>
             </section>
             <section class="gimbal">
+                <article>
+                    <h2>The Gimbal</h2>
+                    <p>The experiment deserved a better gimbal for measuring the results of the experiment. Here’s a picture of the second version, which provides 3-degrees of freedom.</p>
+                    <img src="/resources/media/gimbal-version-2.jpg" style="width: 400px;" alt="picture of gimbal version 2">
+                </article>
             </section>
             <section class="data noise">
+                <h2>Understanding Sensor Noise</h2>
+                <article>
+                    <h3>Description</h3>
+                    <p>The code that I wrote for the <a href="/projects/project-11.html" title="MPU6-5- Fundamental with Arduino">previous project</a> gathered accelerometer and gyroscope data at the X-Y-Z axes.</p>
+                    <p>In this project, I'm adding the capability to measure total amplitude of the data (instead of X-Y-Z axes), plus the standard deviation.</p>
+                    <p>I then create a simple data logger to understand noise characteristics.</p>
+                    <p>The loop in the Arduino code performs the following operations:</p>
+                    <ul>
+                        <li>Read samples of data from MPU6050 and convert the units</li>
+                        <li>It accumulates the predetermined number of data samples and</li>
+                        <li>Calls the function that perform data analysis</li>
+                        <li>Resets the variables to start a new analysis</li>
+                    </ul>
+                    <p>The data analysis in showResults reports the following information:</p>
+                    <ul>
+                        <li>Calculates the standard deviation for the accelerometer and gyroscope data</li>
+                        <li>Prints the accelerometer results</li>
+                        <li>Prints the gyroscope results</li>
+                        <li>Prints the gravity calculation calibration</li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Arduino Code</h3>
+<pre><code>#include &lt;Wire.h&gt;
+
+const int MPU_addr = 0x68;
+int16_t AcX, AcY, AcZ, GyX, GyY, GyZ;
+
+// Scaling factors
+const float accel_scale = 16384.0;
+const float gyro_scale = 131.0;
+
+// Analysis variables
+const int SAMPLE_SIZE = 50;
+const int LOOP_DELAY = 50;  // in msec
+const int BOARD_DELAY = 1000;  // in msec
+
+int count = 0;
+float sum_ax = 0, sum_ay = 0, sum_az = 0;
+float sum_gx = 0, sum_gy = 0, sum_gz = 0;
+float sum_amag = 0, sum_gmag = 0;
+float sum_ax2 = 0, sum_ay2 = 0, sum_az2 = 0;
+float sum_amag2 = 0, sum_gmag2 = 0;
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();
+ 
+  // Wake up MPU
+  Wire.beginTransmission(MPU_addr);
+  Wire.write(0x6B);
+  Wire.write(0);
+  Wire.endTransmission(true);
+ 
+  Serial.println("=== IMU Noise Test ===");
+  Serial.println("Keep IMU still. Testing...");
+  delay(BOARD_DELAY);  // wait for the board to be ready
+}
+
+void loop() {
+  // Read IMU
+  Wire.beginTransmission(MPU_addr);
+  Wire.write(0x3B);
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU_addr, 14, true);
+ 
+  AcX = Wire.read() &lt;&lt; 8 | Wire.read();
+  AcY = Wire.read() &lt;&lt; 8 | Wire.read();
+  AcZ = Wire.read() &lt;&lt; 8 | Wire.read();
+  Wire.read(); Wire.read(); // Skip temperature
+  GyX = Wire.read() &lt;&lt; 8 | Wire.read();
+  GyY = Wire.read() &lt;&lt; 8 | Wire.read();
+  GyZ = Wire.read() &lt;&lt; 8 | Wire.read();
+ 
+  // Convert IMU data to physical units
+  float ax = AcX / accel_scale;
+  float ay = AcY / accel_scale;
+  float az = AcZ / accel_scale;
+  float gx = GyX / gyro_scale;
+  float gy = GyY / gyro_scale;
+  float gz = GyZ / gyro_scale;
+ 
+  if (count &lt; SAMPLE_SIZE) {
+    /* We're going to analyze the data for every SAMPLE_SIZE samples.
+       This here code accumulates the data that's received from the IMU
+       and when the correct number of samples has been received, then
+       then next loop runs the code in ELSE section, which prints the
+       results of the analysis.
+    */
+    // Calculate magnitudes of accelerometer and gyroscope x-y-z- data
+    float amag = sqrt(ax*ax + ay*ay + az*az);
+    float gmag = sqrt(gx*gx + gy*gy + gz*gz);
+   
+    // Accumulate sums for mean
+    sum_ax += ax; sum_ay += ay; sum_az += az;
+    sum_gx += gx; sum_gy += gy; sum_gz += gz;
+    sum_amag += amag; sum_gmag += gmag;
+   
+    // Accumulate sums of squares for std dev
+    sum_ax2 += ax*ax; sum_ay2 += ay*ay; sum_az2 += az*az;
+    sum_amag2 += amag*amag; sum_gmag2 += gmag*gmag;
+   
+    count++;
+   
+    if (count % 10 == 0) {
+      Serial.print("Progress: ");
+      Serial.print(count);
+      Serial.print("/");
+      Serial.println(SAMPLE_SIZE);
+    }
+  } else {
+    // Calculate and display results
+    showResults();
+   
+    // Reset for next test
+    count = 0;
+    sum_ax = sum_ay = sum_az = 0;
+    sum_gx = sum_gy = sum_gz = 0;
+    sum_amag = sum_gmag = 0;
+    sum_ax2 = sum_ay2 = sum_az2 = 0;
+    sum_amag2 = sum_gmag2 = 0;
+  }
+ 
+  delay(LOOP_DELAY);
+}
+
+void showResults() {
+  Serial.println("\n=== NOISE ANALYSIS RESULTS ===");
+ 
+  // Calculate means of data
+  float avg_ax = sum_ax / SAMPLE_SIZE;
+  float avg_ay = sum_ay / SAMPLE_SIZE;
+  float avg_az = sum_az / SAMPLE_SIZE;
+  float avg_amag = sum_amag / SAMPLE_SIZE;
+  float avg_gmag = sum_gmag / SAMPLE_SIZE;
+ 
+  // Calculate standard deviations using: sqrt((sum_x2 - n*mean^2)/(n-1))
+  float std_ax = sqrt((sum_ax2 - SAMPLE_SIZE * avg_ax * avg_ax) / (SAMPLE_SIZE-1));
+  float std_ay = sqrt((sum_ay2 - SAMPLE_SIZE * avg_ay * avg_ay) / (SAMPLE_SIZE-1));
+  float std_az = sqrt((sum_az2 - SAMPLE_SIZE * avg_az * avg_az) / (SAMPLE_SIZE-1));
+  float std_amag = sqrt((sum_amag2 - SAMPLE_SIZE * avg_amag * avg_amag) / (SAMPLE_SIZE-1));
+  float std_gmag = sqrt((sum_gmag2 - SAMPLE_SIZE * avg_gmag * avg_gmag) / (SAMPLE_SIZE-1));
+  float acc_err = abs(avg_amag-1.0);
+ 
+  // Accelerometer results
+  Serial.println("ACCELEROMETER:");
+  Serial.print("X: "); Serial.print(avg_ax,3); Serial.print("g ±"); Serial.println(std_ax,4);
+  Serial.print("Y: "); Serial.print(avg_ay,3); Serial.print("g ±"); Serial.println(std_ay,4);
+  Serial.print("Z: "); Serial.print(avg_az,3); Serial.print("g ±"); Serial.println(std_az,4);
+  Serial.print("Total: "); Serial.print(avg_amag,3); Serial.print("g ±"); Serial.print(std_amag,4);
+  Serial.println(std_amag &lt; 0.004 ? " [EXCELLENT]" : std_amag &lt; 0.01 ? " [GOOD]" : " [POOR]");
+ 
+  // Gyroscope results  
+  Serial.println("\nGYROSCOPE:");
+  Serial.print("Total: "); Serial.print(avg_gmag,2); Serial.print("°/s ±"); Serial.print(std_gmag,3);
+  Serial.println(std_gmag &lt; 0.033 ? " [EXCELLENT]" : std_gmag &lt; 0.05 ? " [GOOD]" : " [POOR]");
+ 
+  // Health check
+  Serial.println("\nGRAVITY CHECK:");
+  Serial.print("Measurement Error: ");
+  Serial.print(abs(avg_amag-1.0), 3);
+  Serial.println(acc_err &lt; 0.02 ? " [EXCELLENT]" : acc_err &lt; 0.05 ? " [GOOD]" : " [POOR]");
+
+
+  Serial.println("\nSPECS: Accel &lt; 0.004g, Gyro &lt; 0.033°/s\n");
+}</code></pre>
+                </article>
+                <article>
+                    <h3>Output Data</h3>
+                    <p>Results when X, Y, and Z = 0, and stationary</p>
+<pre><code>=== NOISE ANALYSIS RESULTS ===
+ACCELEROMETER:
+X: -0.051g ±0.0030
+Y: 0.043g ±0.0030
+Z: 0.784g ±0.0043
+Total: 0.787g ±0.0044 [GOOD]
+
+GYROSCOPE:
+Total: 0.81°/s ±0.156 [POOR]
+
+GRAVITY CHECK:
+Measurement Error: 0.213 [POOR]
+
+SPECS: Accel &lt; 0.004g, Gyro &lt; 0.033°/s</code></pre>
+<p>Results with X = -30° and stationary:</p>
+<pre><code>=== NOISE ANALYSIS RESULTS ===
+ACCELEROMETER:
+X: 0.075g ±0.0032
+Y: -0.446g ±0.0028
+Z: 0.683g ±0.0046
+Total: 0.819g ±0.0040 [GOOD]
+
+GYROSCOPE:
+Total: 0.84°/s ±0.122 [POOR]
+
+GRAVITY CHECK:
+Measurement Error: 0.181 [POOR]
+
+SPECS: Accel &lt; 0.004g, Gyro &lt; 0.033°/s</code></pre>
+<p>Results with Y = -30° and stationary:</p>
+<pre><code>=== NOISE ANALYSIS RESULTS ===
+ACCELEROMETER:
+X: -0.397g ±0.0041
+Y: 0.040g ±0.0032
+Z: 0.686g ±0.0045
+Total: 0.793g ±0.0046 [GOOD]
+
+GYROSCOPE:
+Total: 0.81°/s ±0.112 [POOR]
+
+GRAVITY CHECK:
+Measurement Error: 0.207 [POOR]
+
+SPECS: Accel &lt; 0.004g, Gyro &lt; 0.033°/s</code></pre>
+                </article>
+                <article>
+                    <h3>Serial Plotter</h3>
+                    <p>I made some minor adjustments to the code in showResults so I could plot the data using the Serial Plotter of the Arduino IDE. I turned on the Serial Plotter to see what happens to the data at different orientations:</p>
+                    <p>But first, the code that used:</p>
+                    <pre><code>/* print these to use the Serial Plotter */
+Serial.print(avg_amag); Serial.print(", ");
+Serial.print(std_gmag);  Serial.print(", ");
+Serial.println(acc_err);</code></pre>
+
+<p>Plot of the accelerometer data:</p>
+<img href="/resources/media/mpu-acc-x-var.png" alt="plot of accelerometer data">
+<p>Plot of the gyroscope data:</p>
+<img href="/resources/media/mpu-gyr-x-var.png" alt="plot of the gyroscope data">
+<p>Plot of error in measuring gravity:</p>
+<img href="/resources/media/mpu-gerr-x-var.png" alt="plot of gravity measurements">
+
+<p>The plots confirm, as the printed observations, that:</p>
+<ul>
+    <li>Sensor data is noisy even when stationary</li>
+    <li>Accelerometer noise varies with orientation</li>
+    <li>Gyroscope data has bias (non-zero reading when stationary)</li>
+</ul>
+
+                </article>
             </section>
             <section class="data filtering">
             </section>
