@@ -281,10 +281,219 @@ Serial.println(acc_err);</code></pre>
     <li>Accelerometer noise varies with orientation</li>
     <li>Gyroscope data has bias (non-zero reading when stationary)</li>
 </ul>
-
                 </article>
             </section>
             <section class="data filtering">
+                <h2>MPU6050 Data Filtering</h2>
+                <article>
+                    <h3>Filter Types</h3>
+                    <p>The MPU6050's raw accelerometer and gyroscope data is inherently noisy, so filtering is essential for most applications. Here are the main filter types and their trade-offs:</p>
+                    <p>Low-pass filters:</p>
+                    <ul>
+                        <li>Advantages: Simple to implement, effective at removing high-frequency noise and vibrations</li>
+                        <li>Disadvantages: Introduces lag/delay, can make the system feel sluggish for real-time applications</li>
+                        <li>Best for: Smoothing data when some delay is acceptable, like slow-moving orientation tracking</li>
+                    </ul>
+                    <p>High-pass filters:</p>
+                    <ul>
+                        <li>Advantages: Removes drift and low-frequency bias, good for detecting sudden movements</li>
+                        <li>Disadvantages: Can amplify high-frequency noise, removes useful low-frequency information</li>
+                        <li>Best for: Motion detection, removing gravity component from accelerometer data</li>
+                    </ul>
+                    <p>Complementary filter:</p>
+                    <ul>
+                        <li>Advantages: Fast, lightweight, combines accelerometer and gyroscope strengths while minimizing their weaknesses</li>
+                        <li>Disadvantages: Requires manual tuning of the mixing ratio, less optimal than more sophisticated methods</li>
+                        <li>Best for: Real-time orientation estimation on resource-constrained systems like Arduino</li>
+                    </ul>
+                    <p>Kalman filter:</p>
+                    <ul>
+                        <li>Advantages: Theoretically optimal, adapts to changing conditions, provides uncertainty estimates</li>
+                        <li>Disadvantages: Complex to implement and tune, computationally intensive, requires good understanding of system dynamics</li>
+                        <li>Best for: High-precision applications where computational resources allow</li>
+                    </ul>
+                    <p>Moving average:</p>
+                    <ul>
+                        <li>Advantages: Extremely simple, no parameters to tune</li>
+                        <li>Disadvantages: Equal weight to all samples in window, can be too aggressive or too weak</li>
+                        <li>Best for: Quick noise reduction when sophistication isn't needed</li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Implementing Complementary Filter</h3>
+                    <pre><code>#include &lt;Wire.h&gt;
+#include &lt;Adafruit_MPU6050.h&gt;
+#include &lt;Adafruit_Sensor.h&gt;
+
+// Create an instance of the MPU6050 class called mpu
+Adafruit_MPU6050 mpu;
+
+// useful constants
+const int SERIAL_BPS = 9600;
+const int LOOP_DELAY = 10;
+
+// Complementary filter variables
+float dt = 0.01;  // Time step (10ms = 100Hz)
+float alpha = 0.98;  // Filter coefficient (0.98 means 98% gyro, 2% accel)
+
+// Angle estimates
+float pitch = 0;
+float roll = 0;
+
+// Sensor event structures
+sensors_event_t accel, gyro, temp;
+
+// Values computed from sensor data in processRawData
+float accel_pitch, accel_roll;
+float gyro_pitch_rate, gyro_roll_rate;
+
+// Timing
+unsigned long last_time;
+
+void setup() {
+  Serial.begin(SERIAL_BPS);
+ 
+  // Initialize MPU6050
+  if (!mpu.begin()) {
+    Serial.println("Failed to find MPU6050 chip");
+    while (1) {
+      delay(10);
+    }
+  }
+  Serial.println("MPU6050 Found!");
+
+  // Set accelerometer and gyroscope ranges
+  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+ 
+  // Calibrate initial angles using accelerometer
+  calibrateInitialAngles();
+ 
+  last_time = millis();
+}
+
+void loop() {
+  // Calculate time step
+  unsigned long current_time = millis();
+  dt = (current_time - last_time) / 1000.0;
+  last_time = current_time;
+ 
+  // Read sensor data
+  mpu.getEvent(&accel, &gyro, &temp);
+ 
+  // Process raw data
+  processRawData();
+ 
+  // Apply complementary filter
+  complementaryFilter();
+ 
+  // Print results
+  printToPlot();
+ 
+  delay(LOOP_DELAY);
+}
+
+void processRawData() {
+  // Convert accelerometer values to angles (in degrees)
+  // accel.acceleration values are in m/s²
+  accel_pitch = atan2(accel.acceleration.y,
+                     sqrt(accel.acceleration.x * accel.acceleration.x +
+                          accel.acceleration.z * accel.acceleration.z)) * 180/PI;
+ 
+  accel_roll = atan2(-accel.acceleration.x,
+                    sqrt(accel.acceleration.y * accel.acceleration.y +
+                         accel.acceleration.z * accel.acceleration.z)) * 180/PI;
+ 
+  // Gyroscope values are in rad/s, convert to degrees/s
+  gyro_pitch_rate = gyro.gyro.x * 180/PI;
+  gyro_roll_rate = gyro.gyro.y * 180/PI;
+}
+
+void complementaryFilter() {
+  // Complementary filter equation:
+  // angle = alpha * (angle + gyro_rate * dt) + (1 - alpha) * accel_angle
+ 
+  pitch = alpha * (pitch + gyro_pitch_rate * dt) + (1 - alpha) * accel_pitch;
+  roll = alpha * (roll + gyro_roll_rate * dt) + (1 - alpha) * accel_roll;
+}
+
+void calibrateInitialAngles() {
+  Serial.println("Calibrating... Keep sensor still");
+ 
+  float sum_ax = 0, sum_ay = 0, sum_az = 0;
+  int samples = 100;
+ 
+  for (int i = 0; i &lt; samples; i++) {
+    mpu.getEvent(&accel, &gyro, &temp);
+    sum_ax += accel.acceleration.x;
+    sum_ay += accel.acceleration.y;
+    sum_az += accel.acceleration.z;
+    delay(20);
+  }
+ 
+  // Calculate average and initial angles
+  float avg_ax = sum_ax / samples;
+  float avg_ay = sum_ay / samples;
+  float avg_az = sum_az / samples;
+ 
+  pitch = atan2(avg_ay, sqrt(avg_ax*avg_ax + avg_az*avg_az)) * 180/PI;
+  roll = atan2(-avg_ax, sqrt(avg_ay*avg_ay + avg_az*avg_az)) * 180/PI;
+ 
+  Serial.println("Calibration complete");
+}
+
+void printResults() {
+  // use this one instead of printToPlot if you plan to print the data
+  // make sure to update the call in loop()
+  Serial.print("Pitch: ");
+  Serial.print(pitch, 2);
+  Serial.print("°\tRoll: ");
+  Serial.print(roll, 2);
+  Serial.print("°\t");
+  Serial.print("Accel P: ");
+  Serial.print(accel_pitch, 2);
+  Serial.print("°\tAccel R: ");
+  Serial.print(accel_roll, 2);
+  Serial.println("°");
+}
+
+void printToPlot() {
+  // use this one instead of printResult if you plan to plot the data
+  // make sure to update the call in loop()
+  Serial.print(pitch, 2); Serial.print(", ");
+  Serial.print(roll, 2); Serial.print(", ");
+  Serial.print(accel_pitch, 2); Serial.print(", ");
+  Serial.println(accel_roll, 2);
+}
+
+// Alternative implementation with adjustable parameters
+void setFilterParameters(float new_alpha, float new_dt) {
+  alpha = constrain(new_alpha, 0.0, 1.0);
+  dt = new_dt;
+}
+
+// Function to get current angle estimates
+float getPitch() {
+  return pitch;
+}
+
+float getRoll() {
+  return roll;
+}</code></pre>
+                </article>
+                <article>
+                    <h3>Plotting The Results</h3>
+                    <p>The above code yields a graph similar to the following:</p>
+                    <img src="/resources/media/mpu6040_compfilter_01.png" style="width: 400px;" alt="plot of data and complementary filter">
+                    <p>Where:</p>
+                    <ul>
+                        <li>Value 1 is the <code>pitch</code> value computed by the complementary filter</li>
+                        <li>Valie 2 is the <code>roll</code> value computed by the complementary filter.</li>
+                        <li>Value 3 is the <code>accel_pitch</code> value computed directly from sensor accelerometer data</li>
+                        <li>Value 4 is the <code>accel_roll</code> value computed dorectly from sensor accelerometer data</li>
+                    </ul>
+                </article>
             </section>
             <section>
                 <article>
@@ -294,6 +503,96 @@ Serial.println(acc_err);</code></pre>
                         <li><a href="https://epictecs.wordpress.com/2018/05/28/how-to-interface-arduino-and-the-mpu6050-sensor/">How to Interface Arduino and the MPU6050 Sensor</a></li>
                         <li><a href="/projects/project-11.html" title="MPU6050 Fundamental with Arduino">MPU6050 Fundamentals with Arduino</a></li>
                     </ul>
+                </article>
+                <article>
+                    <h3>Varying The Alpha Parameter</h3>
+                    <p>I was planning to display multiple grapes to demonstrate the effects of using different values of alpha. But then, the test platform (gimbal) is manual and I cannot adequately reproduce the results. Thus, I updated the code to compare the results through a statistical analysis of the effects of alpha.</p>
+                    <p>Static Gimbal</p>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Alpha</th>
+                                <th>P Std Dev</th>
+                                <th>R Std Dev</th>
+                                <th>P Noise</th>
+                                <th>R Noise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0.75</td>
+                                <td>0.07</td>
+                                <td>0.04</td>
+                                <td>0.021</td>
+                                <td>0.017</td>
+                            </tr>
+                            <tr>
+                                <td>0.85</td>
+                                <td>0.07</td>
+                                <td>0.05</td>
+                                <td>0.014</td>
+                                <td>0.012</td>
+                            </tr>
+                            <tr>
+                                <td>0.95</td>
+                                <td>0.06</td>
+                                <td>0.04</td>
+                                <td>0.005</td>
+                                <td>0.004</td>
+                            </tr>
+                            <tr>
+                                <td>0.98</td>
+                                <td>nan</td>
+                                <td>0.03</td>
+                                <td>0.002</td>
+                                <td>0.001</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <p>Dynamic Gimbal</p>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Alpha</th>
+                                <th>P Std Dev</th>
+                                <th>R Std Dev</th>
+                                <th>P Noise</th>
+                                <th>R Noise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0.75</td>
+                                <td>31.42</td>
+                                <td>1.90</td>
+                                <td>1.282</td>
+                                <td>0.466</td>
+                            </tr>
+                            <tr>
+                                <td>0.85</td>
+                                <td>30.63</td>
+                                <td>1.72</td>
+                                <td>0.936</td>
+                                <td>0.226</td>
+                            </tr>
+                            <tr>
+                                <td>0.95</td>
+                                <td>28.86</td>
+                                <td>1.63</td>
+                                <td>0.792</td>
+                                <td>0.116</td>
+                            </tr>
+                            <tr>
+                                <td>0.98</td>
+                                <td>27.22</td>
+                                <td>1.28</td>
+                                <td>0.734</td>
+                                <td>0.084</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </article>
             </section>
          </main>

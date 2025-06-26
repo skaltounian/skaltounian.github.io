@@ -142,6 +142,39 @@ article {
     margin-top: 15px;
     margin-bottom: 30px;
 }
+
+/* 4c. Table style --------------------- */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    text-align: left;
+    border: 1px solid lightgray;
+}
+
+.styled-table thead tr {
+    background-color: #6fa696;
+    font-size: 14px;
+    color: white;
+    text-align: left;
+}
+
+.styled-table td {
+    font-size: 14px;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    border: 1px solid lightgray;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid lightgray;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: lightgray;
+}
   
 @media screen and (min-width: 1000px) {
     /* 4a. Navbar style --------------------- */
