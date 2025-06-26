@@ -288,31 +288,31 @@ Serial.println(acc_err);</code></pre>
                 <article>
                     <h3>Filter Types</h3>
                     <p>The MPU6050's raw accelerometer and gyroscope data is inherently noisy, so filtering is essential for most applications. Here are the main filter types and their trade-offs:</p>
-                    <p>Low-pass filters:</p>
+                    <h4>Low-pass filters:</h4>
                     <ul>
                         <li>Advantages: Simple to implement, effective at removing high-frequency noise and vibrations</li>
                         <li>Disadvantages: Introduces lag/delay, can make the system feel sluggish for real-time applications</li>
                         <li>Best for: Smoothing data when some delay is acceptable, like slow-moving orientation tracking</li>
                     </ul>
-                    <p>High-pass filters:</p>
+                    <h4>High-pass filters:</h4>
                     <ul>
                         <li>Advantages: Removes drift and low-frequency bias, good for detecting sudden movements</li>
                         <li>Disadvantages: Can amplify high-frequency noise, removes useful low-frequency information</li>
                         <li>Best for: Motion detection, removing gravity component from accelerometer data</li>
                     </ul>
-                    <p>Complementary filter:</p>
+                    <h4>Complementary filter:</h4>
                     <ul>
                         <li>Advantages: Fast, lightweight, combines accelerometer and gyroscope strengths while minimizing their weaknesses</li>
                         <li>Disadvantages: Requires manual tuning of the mixing ratio, less optimal than more sophisticated methods</li>
                         <li>Best for: Real-time orientation estimation on resource-constrained systems like Arduino</li>
                     </ul>
-                    <p>Kalman filter:</p>
+                    <h4>Kalman filter:</h4>
                     <ul>
                         <li>Advantages: Theoretically optimal, adapts to changing conditions, provides uncertainty estimates</li>
                         <li>Disadvantages: Complex to implement and tune, computationally intensive, requires good understanding of system dynamics</li>
                         <li>Best for: High-precision applications where computational resources allow</li>
                     </ul>
-                    <p>Moving average:</p>
+                    <h4>Moving average:</h4>
                     <ul>
                         <li>Advantages: Extremely simple, no parameters to tune</li>
                         <li>Disadvantages: Equal weight to all samples in window, can be too aggressive or too weak</li>
@@ -507,7 +507,7 @@ float getRoll() {
                 <article>
                     <h3>Varying The Alpha Parameter</h3>
                     <p>I was planning to display multiple grapes to demonstrate the effects of using different values of alpha. But then, the test platform (gimbal) is manual and I cannot adequately reproduce the results. Thus, I updated the code to compare the results through a statistical analysis of the effects of alpha.</p>
-                    <p>Static Gimbal</p>
+                    <h4>Static Gimbal</h4>
                     <table class="styled-table">
                         <thead>
                             <tr>
@@ -550,7 +550,7 @@ float getRoll() {
 
                         </tbody>
                     </table>
-                    <p>Dynamic Gimbal</p>
+                    <h4>Dynamic Gimbal</h4>
                     <table class="styled-table">
                         <thead>
                             <tr>
