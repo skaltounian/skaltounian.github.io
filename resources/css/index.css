@@ -49,8 +49,8 @@ h4 {
 }
 
 h1 {
-    font-weight: bold;
     font-size: 25px;
+    font-weight: bold;
     line-height: .85;
 }
 
@@ -84,6 +84,11 @@ section::before, section::after {
     content: " ";
     display: table;
     clear: both;
+}
+
+.context {
+    font-style: italic;
+    margin-top: 0.5em;
 }
 
 /* 4. Module Styles ======================*/
