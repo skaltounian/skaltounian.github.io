@@ -83,6 +83,11 @@ section {
     padding: 0 15px;
 }
 
+.context {
+    font-style: italic;
+    margin-top: 0.5em;
+}
+
 /* 4. Module Styles ======================*/
 
   /* 4b. Breadcrumb style ---------------- */
