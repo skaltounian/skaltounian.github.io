@@ -8,7 +8,6 @@
         <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
         <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <script src="/resources/jscripts/scripts.js" defer></script>
     </head>
     <body>
         <noscript>
@@ -18,7 +17,7 @@
         <!-- The header with navigation and breadcrumbs -->
         <header>
             <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
-            <nav class="navbar" id="navbar"></nav>
+            <nav class="navbar" id="navbar" aria-label="Menu Bar"></nav>
             
             <!-- Draw the breadcrumb on the display -->
             <nav aria-label="Breadcrumb">
@@ -39,17 +38,21 @@
             </section>
             <section class="article-list">
                 <nav class="article-list" aria-label="Essay List">
-                    <li><a href="/articles/article-005.html">Ուրվագիծ Հայ Եկեղեցու Բարեկարգության Պատմության (20-րդ Դար)</a></li>
-                    <li><a href="/articles/article-004.html">Թորգոմ Պատրիարք Գուշակյանը Եկեղեցական Բարեկարգության Ջատագով</a></li>
-                    <li><a href="/articles/article-003.html">Եպիսկոպոսական Աթոռները Գրիգոր Լուսաւորչի Օրերին</a></li>
-                    <li><a href="/articles/article-001.html">Գրատպութեան Օգտագործումը Իբր Հայ Ժողովուրդի Ինքնապահպանման Միջոց</a></li>
-                    <li><a href="/articles/article-002.html" lang="en">The Use of Printing as a Means of Self Preservation</a></li>
+                    <ul>
+                        <li><a href="/articles/article-005.html">Ուրվագիծ Հայ Եկեղեցու Բարեկարգության Պատմության (20-րդ Դար)</a></li>
+                        <li><a href="/articles/article-004.html">Թորգոմ Պատրիարք Գուշակյանը Եկեղեցական Բարեկարգության Ջատագով</a></li>
+                        <li><a href="/articles/article-003.html">Եպիսկոպոսական Աթոռները Գրիգոր Լուսաւորչի Օրերին</a></li>
+                        <li><a href="/articles/article-001.html">Գրատպութեան Օգտագործումը Իբր Հայ Ժողովուրդի Ինքնապահպանման Միջոց</a></li>
+                        <li><a href="/articles/article-002.html" lang="en">The Use of Printing as a Means of Self Preservation</a></li>
+                    </ul>
                 </nav>
             </section>
         </main>
 
         <!-- Footer content is fetched from external file = footer.html -->
         <footer id='footer-content'></footer>
+        
+        <script src="/resources/jscripts/scripts.js"></script>
 
         <!-- Script to insert menu/navbar content for this page -->
         <script>insertContentById('/menu.html', 'navbar');</script>
