@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A Technical project that describes how to build a back-up drive using a Raspberry Pi">
+        <meta name="description" content="A step-by-step guide to building a back-up drive using a Raspberry Pi">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>RPI NextCloud</title>
         <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
@@ -35,7 +35,7 @@
                 <h1>Set up a NextCloud backup server with a Raspberry PI</h1>
                 <article class="intro">
                     <h2>Introduction</h2>
-                    <p>This article describes how I set up a NextCloud back-up server using a Raspberry Pi (4).</p>
+                    <p>This article describes how I set up a NextCloud backup server using a Raspberry Pi (3).</p>
                     <p>Just for fun.</p>
                 </article>
             </section>
@@ -46,14 +46,14 @@
                     <p>The <a href="https://www.raspberrypi.com/software/">RPI Imager Tool</a> was very helpful in getting this done:</p>
                     <ul>
                         <li>Raspberry Pi, headless image (no desktop).</li>
-                        <li>Configure the <code>username.</code></li>
-                        <li>Configure the <code>password.</code></li>
+                        <li>Configure the <code>username</code>.</li>
+                        <li>Configure the <code>password</code>.</li>
                         <li>Used <code>/etc/os-release</code> command to confirm I had installed bullseye.</li>
                     </ul>
                     <h3>LAN Setup</h3>
                     <p>Set up the RPI LAN like so:</p>
                     <ul>
-                        <li>At the command line, type: <code>sudo raspi-config.</code></li>
+                        <li>At the command line, type: <code>sudo raspi-config</code>.</li>
                         <li>Navigate to <b>System Options > Wireless LAN</b> and configure the SSID and Passphrase for Wi-Fi.</li>
                         <li>Complete the change by selecting <code>OK</code> and exit the config menu.</li>
                         <li>You can use <code>ifconfig</code> to check that the wireless interface is now connected.</li>
@@ -63,7 +63,7 @@
                     <h3>Other Setup</h3>
                     <p>This would be a good time to complete some other configurations:</p>
                     <ul>
-                        <li>At the command line, type: <code>sudo raspi-config.</code></li>
+                        <li>At the command line, type: <code>sudo raspi-config</code>.</li>
                         <li>Change the locale to something more relevant to you.</li>
                         <li>Change the time zone to your local zone.</li>
                         <li>Enable SSH if you think you're going to use an application like PuTTY to connect to your RPI.</li>
@@ -78,8 +78,7 @@
                         <li>Reboot the RPI.</li>
                     </ul>
                     <h3>Static IP - NOT</h3>
-                    <p>Using static IPs is not good practise.</p>
-                    <p>A better solution is to define the hostname of the RPI on the network router and use the same name in PuTTY to connect to the RPI remotely.</p>
+                    <p>While static IPs can be useful, it's often more manageable to use DHCP with a reserved hostname on your router. This allows dynamic IP assignment while maintaining consistent access via hostname.</p>
                 </article>
                 <article>
                     <h2>Setup the External Drive</h2>
@@ -115,15 +114,14 @@
                 </article>
                 <article>
                     <h3>Map the drive to a directory</h3>
-                    <p>When the RPI powers back up, type the following:
-                        <ul>
-                            <li>Confirm where the drive is: <code>sudo fdisk -l</code></li>
-                            <li>Create a mounting point: <code>sudo mkdir /media/rpiExternalDrive</code></li>
-                            <li>Mount the USB drive at that location: <code> sudo mount /dev/sda1 /media/rpiExternalDrive</code></li>
-                            <li>Confirm that the drive was mounted correctly: <code>mount | grep sda1</code></li>
-                            <li>You should see something like this: <code>/dev/sda1 on /media/rpiExternalDrive type ext4 (rw,relatime)</code></li>
-                        </ul>
-                    </p>
+                    <p>When the RPI powers back up, type the following:</p>
+                    <ul>
+                        <li>Confirm where the drive is: <code>sudo fdisk -l</code></li>
+                        <li>Create a mounting point: <code>sudo mkdir /media/rpiExternalDrive</code></li>
+                        <li>Mount the USB drive at that location: <code> sudo mount /dev/sda1 /media/rpiExternalDrive</code></li>
+                        <li>Confirm that the drive was mounted correctly: <code>mount | grep sda1</code></li>
+                        <li>You should see something like this: <code>/dev/sda1 on /media/rpiExternalDrive type ext4 (rw,relatime)</code></li>
+                    </ul>
                 </article>
                 <article>
                     <h3>Create permanent map to the disk</h3>
@@ -154,7 +152,7 @@
                         <li><code>sudo apt upgrade</code></li>
                         <li><code>sudo apt install samba samba-common</code></li>
                     </ul>
-                    <p>Let's do some editing to the <code>/etc/samba/smb.conf</code></p>
+                    <p>Edit the configuration file <code>/etc/samba/smb.conf</code></p>
                     <p>Then, in text editor scroll to the bottom of the document and look for something like this. If it doesn't exist, then just add the text:</p>
                     <code>[UsernameBackups]
                         <br>path = /media/rpiExternalDrive/
@@ -204,8 +202,10 @@
 
                 <article>
                     <h2>References</h2>
-                    <li><a href="https://www.pcmag.com/how-to/how-to-turn-a-raspberry-pi-into-a-nas-for-whole-home-file-sharing">How to Turn a Raspberry Pi Into a NAS for Whole-Home File Sharing</a></li>
-                    <li><a href="https://linuxconfig.org/howto-mount-usb-drive-in-linux">How to mount USB drive in Linux</a></li>
+                    <ul>
+                        <li><a href="https://www.pcmag.com/how-to/how-to-turn-a-raspberry-pi-into-a-nas-for-whole-home-file-sharing">How to Turn a Raspberry Pi Into a NAS for Whole-Home File Sharing</a></li>
+                        <li><a href="https://linuxconfig.org/howto-mount-usb-drive-in-linux">How to mount USB drive in Linux</a></li>
+                    </ul>
                 </article>
             </section>
 
