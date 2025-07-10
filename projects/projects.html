@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale…">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A collection of tech projects to learn and discover new things.">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Shahe's Geekout</title>
         <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
         <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <script type="text/javascript" src="/resources/jscripts/scripts.js"></script>
     </head>
     <body>
+        <noscript>
+            <p>Please enable JavaScript to view the full site content.</p>
+        </noscript>
         <!-- The header with navigation and breadcrumbs -->
         <header>
             <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
@@ -27,66 +30,66 @@
 
         <!-- Get started with the main section -->
         <main>
-            <section class="grid-container">
+            <section class="grid-container" aria-label="Project List">
                 <article class="banner">
-                    <h1>Techie Projects</h1>
+                    <h1>Tech Projects</h1>
                     <p>Crazy projects that keep the left side of my brain going.</p>
-                    <p>This page is still on the syle sheet used by the landing page. I will eventually switch it to a grid layout.</p>
+                    <p>This page is still on the style sheet used by the landing page. I will eventually switch it to a grid layout.</p>
                 </article>
-                <article class="project 12">
+                <article class="project" id="project-12">
                     <h2>MPU6050 Sensor Noise and Filtering</h2>
                     <p>Project to measure MPU-6050 noise and how to filter it.</p>
                     <p><a href="/projects/project-12.html">Read more</a></p>
                 </article>
-                <article class="project 11">
+                <article class="project" id="project-11">
                     <h2>MPU-6050 Fundamentals with Arduino</h2>
                     <p>Sample project to integrate an MPU-6050 with an Arduino Uno.</p>
                     <p><a href="/projects/project-11.html">Read more</a></p>
                 </article>
-                <article class="project 10">
+                <article class="project" id="project-10">
                     <h2>Navidrome Using Docker Container</h2>
                     <p>Instructions to install Navidrome using Docker Container</p>
                     <p><a href="/projects/project-10.html">Read more</a></p>
                 </article>
-                <article class="project 9">
+                <article class="project" id="project-9">
                     <h2>Add Email Support to WordPress</h2>
                     <p>Add email support to your WordPress website.</p>
                     <p><a href="/projects/project-9.html">Read more</a></p>
                 </article>
-                <article class="project 8">
+                <article class="project" id="project-8">
                     <h2>Reset WordPress Password</h2>
                     <p>Reset the Password on a WordPress account using Linux command line.</p>
-                    <p><a href="/projects/project-8.html">Read More"></a></p>
+                    <p><a href="/projects/project-8.html">Read More></a></p>
                 </article>
-                <article class="project 7">
+                <article class="project" id="project-7">
                     <h2>Colour Scheme</h2>
                     <p>Establishing the colour scheme for this website.</p>
                     <p><a href="/projects/project-7.html">Read More</a></p>
                 </article>
-                <article class="project 6">
+                <article class="project" id="project-6">
                     <h2>Print Server</h2>
                     <p>Use a Raspberry Pi to create a WiFi printer.</p>
                     <p><a href="/projects/project-6.html">Read More</a></p>
                 </article>
-                <article class="project 5">
+                <article class="project" id="project-5">
                     <h2>Back-up Server</h2>
                     <p>Use a Raspberry Pi to build a back-up server.</p>
                     <p><a href="/projects/project-5.html">Read More</a></p>
                 </article>
-                <article class="project 4">
+                <article class="project" id="project-4">
                     <h2>Music Streaming</h2>
                     <p>Build a Navidrome Music Server with a Raspberry Pi.</p>
                     <p><a href="/projects/project-4.html">Read More</a></p>
                 </article>
-                <article class="project 3">
+                <article class="project">
                     <h2>DHCP Exercises</h2>
                     <p>Refresh my memory on DHCP with a short lesson.</p>
                 </article>
-                <article class="project 2">
+                <article class="project">
                     <h2>Madsonic Music Server</h2>
                     <p>Use a Raspberry Pi to build a Music Server.</p>
                 </article>
-                <article class="project 1">
+                <article class="project">
                     <h2>Git Cheatsheet</h2>
                     <p>Short list of GIT commands I use regularly.</p>
                 </article>
@@ -97,6 +100,7 @@
         <footer id='footer-content'></footer>
 
         <!-- Script to insert menu/navbar content for this page -->
+        <script src="/resources/jscripts/scripts.js"></script>
         <script>insertContentById('/menu.html', 'navbar');</script>
 
         <!-- Script to insert footer menu from external footer.html -->
