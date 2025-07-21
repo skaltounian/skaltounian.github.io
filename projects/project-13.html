@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<!-- Page describing how I integrated a camera into the Raspberry Pi. -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Technical project ingrate a camera into a Raspberry Pi and write Python scripts to control it.">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>RPI Camera</title>
+        <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        <noscript>
+            <p>Please enable JavaScript to view the full site content.</p>
+        </noscript>
+
+        <header>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
+
+            <!-- Breadcrumb links -->
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projects/projects.html">Geekout</a></li>
+                    <li>RPI Camera Integration</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <h1>Integrate a Camera into a Raspberry Pi</h1>
+            <section class="introduction">
+                <article>
+                    <h2>Introduction</h2>
+                    <p>In this project, I learn to integrate a camera with a Raspberry Pi (3) and write a couple of Python scripts to control it.</p>
+                </article>
+            </section>
+         </main>
+
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
+
+        <!-- Script to insert menu/navbar content for this page -->
+        <script src="/resources/jscripts/scripts.js"></script>
+        <script>insertContentById('/menu.html', 'navbar');</script>
+
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
+
+        <!-- Script for the hamburger menu -->
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
