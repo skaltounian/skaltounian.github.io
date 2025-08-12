@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Technical project the implementation of a simple face recognition using OpenCV on the Raspberry Pi.">
+        <meta name="description" content="Technical project for the implementation of a simple face recognition on the Raspberry Pi using OpenCV.">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>RPI Camera</title>
         <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
@@ -32,8 +32,8 @@
 
         </header>
         <main>
-            <h1>Implementing Face Recognition on the  Raspberry Pi</h1>
-            <p><time datetime="2025-07-21">21 July 2025</time></p>
+            <h1>Implementing Face Recognition on the Raspberry Pi</h1>
+            <p><time datetime="2025-08-11">11 August 2025</time></p>
             <section class="introduction">
                 <article>
                     <h2>Introduction</h2>
@@ -205,10 +205,10 @@ print('picamera2 test successful!')
                 </article>
                 <article>
                     <h3>A Few Pictures of My Results</h3>
-                    <img src="/resources/media/face-recog-test-2025081101.jpg" alt="Carter true-positive"><br>
-                    <img src="/resources/media/face-recog-test-2025081102.jpg" alt="Mandela true-positive"><br>
-                    <img src="/resources/media/face-recog-test-2025081103.jpg" alt="Mandela and unknown"><br>
-                    <img src="/resources/media/face-recog-test-2025081104.jpg" alt="Young Mandela still recognized"><br>
+                    <img src="/resources/media/face-recog-test-2025081101.jpg" style="width: 400px;" alt="Carter true-positive"><br>
+                    <img src="/resources/media/face-recog-test-2025081102.jpg" style="width: 400px;" alt="Mandela true-positive"><br>
+                    <img src="/resources/media/face-recog-test-2025081103.jpg" style="width: 400px;" alt="Mandela and unknown"><br>
+                    <img src="/resources/media/face-recog-test-2025081104.jpg" style="width: 400px;" alt="Young Mandela still recognized"><br>
                 </article>
             </section>
             <section>
@@ -232,6 +232,39 @@ print('picamera2 test successful!')
                     <p>Look at the <code>Swap:</code> row, where you should see approximately 2.0G. If it still shows 100M or less, double check the file and restart the service again.</p>
                     <p>I'm glad I had Git and my code was already on GitHub.</p>
                 </article>
+                <article>
+                    <h3>Starting With a Clean Slate</h3>
+                    <p>At one point during the project I had gone down so many rabbit holes that I decided to start with a clean slate. One of the reasons for my troubles was that both Claude and ChatGPT assumed the RPi-3 was using <code>libcamera</code>, and I had to remind them (after much experimentation) that since I was running Bookworm we should be using <code>rpicam</code>.</p>
+                    <p>To clean up:</p>
+                    <ul>
+                        <li>Deactivate the virtual environment</li>
+                        <li>Remove <code>face_recognition_env</code></li>
+                        <li>Keep all project files, including the python script and training pictures</li>
+                    </ul>
+                    <p><code>> deactivate</code></p>
+                    <p><code>> rm -rf face_recognition_env</code></p>
+                    <p><code>> sudo apt remove libcamera-apps libcamera-tools</code></p>
+                    <p><code>> sudo apt autoremove</code></p>
+                    <p><code>> sudo apt autoclean  # clean package cache</code></p>
+                    <p>Then, make sure that <code>rpicam</code> is still available:</p>
+                    <p><code>> rpicam-hello --version</code></p>
+                    <p><code>> ls /usr/bin/rpicam*</code></p>
+                </article>
+                <article>
+                    <h3>Image Rotation</h3>
+                    <p>By default, the camera in my setup captured images upside down. This apparently prevents OpenCV2 from recognizing faces, given that most training data for face recognition has faces that are straight on and right side up. Here's how you can configure your camera to rotate the images:</p>
+                    <pre><code>from picamera2 import Picamera2
+from libcamera import Transform
+
+picam2 = Picamera2()
+transform = Transform(rotation=180)
+
+camera_configuration = picam2.create_preview_configuration(
+	main={“size”: (640, 480), “format”: “RGB888”},
+	transform=transform
+)
+</code></pre>
+                </article>
             </section>
             <section>
                 <h2>References</h2>
@@ -239,11 +272,18 @@ print('picamera2 test successful!')
                     <li><a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera">Getting started with the camera module.</a></li>
                     <li><a href="https://www.raspberrypi.com/documentation/computers/camera_software.html">Raspberry Pi: Camera Software</a></li>
                     <li><a href="https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf">The Pi Camera2 library</a></li>
+                    <li><a href="https://raspberrytips.com/picamera2-raspberry-pi">How To Use The Raspberry Pi Camera With Python</a></li>
+                    <li><a href="https://www.raspberrypi.com/documentation/accessories/camera.html#libcamera-and-libcamera-apps">RPi - About the Camera Modules</a></li>
+                    <li><a href="https://forums.raspberrypi.com/viewtopic.php?t=369485">Picamera2 - Combining Size and Transform Configuration</a></li>
+                    <li><a href="https://docs.python.org/3/library/venv.html">venv — Creation of virtual environments</a></li>
+                    <li><a href="https://python.land/virtual-environments/virtualenv">Python venv: How To Create, Activate, Deactivate, And Delete</a></li>
+                    <li><a href="https://opencv.org/">OpenCV</a></li>
+                    <li><a href="https://raspberrytips.com/install-opencv-on-raspberry-pi/">Install OpenCV on Raspberry Pi: The Only Guide You Need</a></li>
                 </ul>
             </section>
          </main>
 
-        <!-- Footer content is fetched from external file = footer.html -->
+         <!-- Footer content is fetched from external file = footer.html -->
         <footer id='footer-content'></footer>
 
         <!-- Script to insert menu/navbar content for this page -->
