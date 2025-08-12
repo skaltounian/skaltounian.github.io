@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<!-- Page describing Face Recognition on the Raspberry Pi. -->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Technical project the implementation of a simple face recognition using OpenCV on the Raspberry Pi.">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>RPI Camera</title>
+        <link href="/resources/css/projectgrid.css" type="text/css" rel="stylesheet">
+        <link rel="icon" href="/resources/media/GEGHART5-32.png" type="image/png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <body>
+        <noscript>
+            <p>Please enable JavaScript to view the full site content.</p>
+        </noscript>
+
+        <header>
+            <!-- Logo, Menu and Hamburger menu is inserted from menu.html -->
+            <nav class="navbar" id="navbar"></nav>
+
+            <!-- Breadcrumb links -->
+            <nav aria-label="Breadcrumb">
+                <ul class="breadcrumb">
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/projects/projects.html">Geekout</a></li>
+                    <li>RPI Face Recognition</li>
+                </ul>
+            </nav>
+
+        </header>
+        <main>
+            <h1>Implementing Face Recognition on the  Raspberry Pi</h1>
+            <p><time datetime="2025-07-21">21 July 2025</time></p>
+            <section class="introduction">
+                <article>
+                    <h2>Introduction</h2>
+                    <p>The purpose of this project is to develop a basic face recognition system using picamera2 and OpenCV on the RPI. The major steps are as follows:</p>
+                    <ul>
+                        <li>Set up work environment and install dependencies</li>
+                        <li>Prepare training and test images</li>
+                        <li>Write and debug the code</li>
+                        <li>Run and evaluate the system</li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <h2>Setup The Environment</h2>
+                <article>
+                    <h3>Equipment List</h3>
+                    <p>Here's the list of equipment that used for this project:</p>
+                    <ul>
+                        <li>Raspberry Pi (3)</li>
+                        <li>Power supply</li>
+                        <li>Mouse connected to the RPI via USB</li>
+                        <li>Keyboard connected to the RPI via USB</li>
+                        <li>Display connected to the RPI via HDMI</li>
+                        <li>One camera connected to the camera port on the RPI with a flex cable</li>
+                    </ul>
+                    <p>I have a standard camera, but there's also a noir variant, which is designed to take pictures in the dark when used with an infrared light source.</p>
+                    <img src="/resources/media/rpi-camera-20250811.jpg" style="width: 400px;" alt="Camera module connected to Raspberry Pi via flex cable">
+                </article>
+                <article>
+                    <h3>Create a Virtual Python Environment</h3>
+                    <p>Make a dedicated directory for this project and go there:</p>
+                    <p><code>> mkdir Recognize</code></p>
+                    <p><code>> cd Recognize</code></p>
+                    <p>Create and activate the virtual environment:</p>
+                    <p><code>> python3 -m venv face_recognition_env --system-site-packages</code></p>
+                    <p><code>> source face_recognition_env/bin/activate</code></p>
+                    <p>When you activate the virtual environment you should see its name <code>(face_recognition)</code> at the beginning of the command line prompt, in parentheses.</p>
+                    <p><em>Info: </em>You can deactivate the virtual environment by typing <code>deactivate</code> at the command prompt.</p>
+                </article>
+            </section>
+            <section>
+                <h2>Verify Camera Operation</h2>
+                <article>
+                    <h3>Test Camera with Built-In Tools</h3>
+                    <p>Verify that the camera is working and take a test photo with these two commands:</p>
+                    <p><code>> rpicam-hello --list-cameras</code></p>
+                    <p><code>> rpicam-still -o test.jpg</code></p>
+                    <p>The first command should show a list of cameras with a response that looks like this:</p>
+                    <img src="/resources/media/rpi-camera-listing-20250806.png" style="width: 400px;" alt="list of cameras as returned with rpicap-hello command">
+                    <p>The second command opens a preview window for a few seconds, saves the picture in a file called test.jpg, followed by a command line message saying: <code>Still capture image received</code>. You can use the built-in viewer to verify the picture.</p>
+                </article>
+                <article>
+                    <h3>Test picamera2 Integration</h3>
+                    <p>You can also use the following script to verify that your <code>picamera2</code> integration is working:</p>
+                    <pre><code># Quick test script
+python3 -c "
+from picamera2 import Picamera2
+import time
+picam2 = Picamera2()
+picam2.start()
+time.sleep(2)
+picam2.capture_file('picamera2_test.jpg')
+picam2.stop()
+print('picamera2 test successful!')
+"</code></pre>
+                    <p>The script should capture and save a picture called <code>picamera2_test.jpg</code> in your local directory, which you can inspect and verify with the viewer on your RPi.</p>
+                </article>
+            </section>
+            <section>
+                <h2>Training and Test Images</h2>
+                <article>
+                    <h3>Prepare Reference Images To Train the Model</h3>
+                    <p>I decided to use pictures of <a href="https://en.wikipedia.org/wiki/Nelson_Mandela">Nelson Mandela</a> and <a href="https://en.wikipedia.org/wiki/Jimmy_Carter">Jimmy Carter</a> for this project. There's a wide range of pictures of the two of them on the Internet, some from their younger days and others that were taken when the two were older.</p>
+                    <p>I Created a folder called <code>reference_images</code> in the project directory, and added five clear photos each of Mandela and Carter. To keep the program simpler, I named the pictures like so: <code>mandela_1.jpg</code>, <code>mandela_2.jpg</code>, <code>carter_1.jpg</code>, etc.</p>
+                </article>
+                <article>
+                    <h3>Test Pictures</h3>
+                    <p>When you're ready to test the face recognition system, you'll have the option of directing the camera either to pictures on the computer screen or unsuspecting family members. Consider testing the following scenarios:</p>
+                    <ol>
+                        <li>Several pictures with only Jimmy Carter</li>
+                        <li>Several pictures with only Nelson Mandela</li>
+                        <li>Pictures of Jimmy Carter with others</li>
+                        <li>Pictures of Nelson Mandela with others</li>
+                        <li>Pictures not containing only unknown faces</li>
+                    </ol>
+                    <p>The first two groups will be relatively easy true-positive pictures. Groups 3 and 4 will be more interesting to test, to see whether the algorithm will score true-positives and true-negatives, and no false-positives or false-negatives. Group 5 should be a confirmation of true-negatives and hopefully won't yield any false-positives.</p>
+                </article>
+            </section>
+            <section>
+                <h2>The Python Script</h2>
+                <article>
+                    <h3>Where to Find the Python Script</h3>
+                    <p>You can find the python script on GitHub: https://github.com/skaltounian/Recognize</p>
+                </article>
+                <article>
+                    <h3>Core Components of the Script</h3>
+                    <p>Here's what the core components do:</p>
+                    <p>Face Database:</p>
+                    <ul>
+                        <li>Process reference images from a designated folder</li>
+                        <li>Extract facial features using the <code>face_recognition library</code></li>
+                        <li>Encode for each known face</li>
+                        <li>Store the database locally using Python <code>pickle</code></li>
+                    </ul>
+                    <p>Camera Interface:</p>
+                    <ul>
+                        <li>Use <code>picamera2</code> for native Raspberry Pi camera integration</li>
+                        <li>Implement image rotation using libcamera</li>
+                        <li>Convert between RGB/BGR colour formats when needed</li>
+                    </ul>
+                    <p>Face Recognition:</p>
+                    <ul>
+                        <li>Real-time face detection using</li>
+                        <li>Face encoding comparison using Euclidean distance</li>
+                        <li>Configurable confidence thresholds (default: 60%)</li>
+                        <li>Return recognized names with confidence percentages</li>
+                    </ul>
+                    <p>Display System:</p>
+                    <ul>
+                        <li>Live video feed with OpenCV GUI</li>
+                        <li>Visual face detection frames (green for known, red for unknown)</li>
+                        <li>Text labels showing names and confidence scores</li>
+                        <li>On-screen rotation and status indicators</li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Classes and Methods</h3>
+                    <ul>
+                        <li>Imports</li>
+                        <li>Class PiCamera2FaceRecognition</li>
+                            <ol type="a">
+                                <li>__init__</li>
+                                <li>load_image_and_encode</li>
+                                <li>build_face_database</li>
+                                <li>save_face_database</li>
+                                <li>load_face_database</li>
+                                <li>setup_camera</li>
+                                <li>capture_frame</li>
+                                <li>camera_thread</li>
+                                <li>recognize_face</li>
+                                <li>draw_restults_on_frame</li>
+                                <li>run_camera_recognition</li>
+                            </ol>
+                        <li>main()</li>
+                    </ul>
+                </article>
+                <article>
+                    <h3>Face Recognition Pipeline</h3>
+                    <ol>
+                        <li>Capture Frame: <code>picamera2</code> captures RGB image</li>
+                        <li>Colour Conversion: RGB to BGR for OpenCV display, BGR to RGB for <code></code>face_recognition</code></li>
+                        <li>Face Detection: Locates faces in the image</li>
+                        <li>Feature Extraction: Creates encoding for each detected face</li>
+                        <li>Comparison: Compares against known face database using Euclidean distance</li>
+                        <li>Classification: Matches below threshold are identified, others marked as "Unknown"</li>
+                        <li>Display: Draws bounding boxes and labels on the video feed</li>
+                    </ol>
+                </article>
+            </section>
+            <section>
+                <h2>Run the System</h2>
+                <article>
+                    <h3>Running the System</h3>
+                    <p>Once you're save the script, make it executable by typing:</p>
+                    <p><code>> sudo chmod +x face_rec_picam2.py</code></p>
+                    <p>Be sure that your virtual environment is active and run the python script:</p>
+                    <p><code>> source face_recognition_env/bin/activate</code></p>
+                    <p><code>> python face_rec_picam2.py</code></p>
+                </article>
+                <article>
+                    <h3>A Few Pictures of My Results</h3>
+                    <img src="/resources/media/face-recog-test-2025081101.jpg" alt="Carter true-positive"><br>
+                    <img src="/resources/media/face-recog-test-2025081102.jpg" alt="Mandela true-positive"><br>
+                    <img src="/resources/media/face-recog-test-2025081103.jpg" alt="Mandela and unknown"><br>
+                    <img src="/resources/media/face-recog-test-2025081104.jpg" alt="Young Mandela still recognized"><br>
+                </article>
+            </section>
+            <section>
+                <h2>Some Things That Went Wrong</h2>
+                <article>
+                    <h3>Installing <code>dlib</code></h3>
+                    <p>This was a tough nut to crack. Having a slow RPI-3 made installing dlib difficult. Compilation took forever - that is, it didn't complete. Having an SSH connection to the RPI didn't help either. At some point, when I had walked away, my Windows computer went to sleep and lost network connection. When, on the next day, I tried to reconnect, the RPI failed to connect. So I rebuilt the RPI. Twice.</p>
+                    <p>The solution was to:</p>
+                    <ol>
+                        <li>Ensure that the necessary prerequisites are installed</li>
+                        <li>Expand Swap memory, which is important for a well aged RPI-3</li>
+                    </ol>
+                    <p>The RPI-3 has limited RAM, so building dlib can crash without enough virtual memory.</p>
+                    <p>Reconfigure the swap memory by editing the configuration file with:</p>
+                    <p><code>> sudo nano /etc/dphys-swapfile</code></p>
+                    <p>Change the line <code>CONF_SWAPSIZE=100</code> to <code>CONF_SWAPSIZE=2048</code></p>
+                    <p>Save and exit, then apply the changes by restarting the swap service with:</p>
+                    <p><code>> sudo systemctl restart dphys-swapfile</code></p>
+                    <p>To verify the new swap is active use the command:</p>
+                    <p><code>> free -h</code></p>
+                    <p>Look at the <code>Swap:</code> row, where you should see approximately 2.0G. If it still shows 100M or less, double check the file and restart the service again.</p>
+                    <p>I'm glad I had Git and my code was already on GitHub.</p>
+                </article>
+            </section>
+            <section>
+                <h2>References</h2>
+                <ul>
+                    <li><a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera">Getting started with the camera module.</a></li>
+                    <li><a href="https://www.raspberrypi.com/documentation/computers/camera_software.html">Raspberry Pi: Camera Software</a></li>
+                    <li><a href="https://datasheets.raspberrypi.com/camera/picamera2-manual.pdf">The Pi Camera2 library</a></li>
+                </ul>
+            </section>
+         </main>
+
+        <!-- Footer content is fetched from external file = footer.html -->
+        <footer id='footer-content'></footer>
+
+        <!-- Script to insert menu/navbar content for this page -->
+        <script src="/resources/jscripts/scripts.js"></script>
+        <script>insertContentById('/menu.html', 'navbar');</script>
+
+        <!-- Script to insert footer menu from external footer.html -->
+        <script>insertContentById('/footer.html', 'footer-content');</script>
+
+        <!-- Script for the hamburger menu -->
+        <script>
+            function myFunction() {
+              var x = document.getElementById("menulinks");
+              if (x.style.display === "block") {
+                x.style.display = "none";
+              } else {
+                x.style.display = "block";
+              }
+            }
+        </script>
+    </body>
+
+</html>
