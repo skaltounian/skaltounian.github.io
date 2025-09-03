@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<!-- Page describing Face Recognition on the Raspberry Pi. -->
+<!-- Page describing OpenCV, Picamera2 Face Recognition on the Raspberry Pi. -->
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -163,18 +163,33 @@ print('picamera2 test successful!')
                     <h3>Classes and Methods</h3>
                     <ul>
                         <li>Imports</li>
-                        <li>Class PiCamera2FaceRecognition</li>
+                        <li>Class CameraManager</li>
+                            <ol type="a">
+                                <li>__init__</li>
+                                <li>setup_camera</li>
+                                <li>capture_frame</li>
+                                <li>camera_thread</li>                          <li></li>
+                                <li>start_camera_thread</li>
+                                <li>get_latest_frame</li>
+                            </ol>
+                        <li>Class FaceDatabaseManager</li>
                             <ol type="a">
                                 <li>__init__</li>
                                 <li>load_image_and_encode</li>
                                 <li>build_face_database</li>
                                 <li>save_face_database</li>
                                 <li>load_face_database</li>
-                                <li>setup_camera</li>
-                                <li>capture_frame</li>
-                                <li>camera_thread</li>
+                                <li>get_known_faces</li>
+                            </ol>
+                        <li>Class FaceRecognizer</li>              
+                            <ol type="a">
+                                <li>__init__</li>    
                                 <li>recognize_face</li>
                                 <li>draw_restults_on_frame</li>
+                            </ol>
+                        <li>Class FaceRecognitionSystem</li>
+                            <ol type="a">
+                                <li>__init__</li>
                                 <li>run_camera_recognition</li>
                             </ol>
                         <li>main()</li>
@@ -205,10 +220,11 @@ print('picamera2 test successful!')
                 </article>
                 <article>
                     <h3>A Few Pictures of My Results</h3>
-                    <img src="/resources/media/face-recog-test-2025081101.jpg" style="width: 400px;" alt="Carter true-positive"><br>
-                    <img src="/resources/media/face-recog-test-2025081102.jpg" style="width: 400px;" alt="Mandela true-positive"><br>
-                    <img src="/resources/media/face-recog-test-2025081103.jpg" style="width: 400px;" alt="Mandela and unknown"><br>
-                    <img src="/resources/media/face-recog-test-2025081104.jpg" style="width: 400px;" alt="Young Mandela still recognized"><br>
+                    <img src="/resources/media/carter_train_001.jpg" style="width: 400px;" alt="Carter true-positive training picture"><br>
+                    <img src="/resources/media/mandela_train_001.jpg" style="width: 400px;" alt="Mandela true-positive training picture"><br>
+                    <img src="/resources/media/mandela_test_001.jpg" style="width: 400px;" alt="Mandela and unknown persons"><br>
+                    <img src="/resources/media/mandela_test_002.jpg" style="width: 400px;" alt="Young Mandela still recognized"><br>
+                    <img src="/resources/media/mandela_test_003.jpg" style="width: 400px;" alt="Young Mandela multiple pictures recognized"><br>
                 </article>
             </section>
             <section>
